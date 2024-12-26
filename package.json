@@ -1,0 +1,101 @@
+{
+  "name": "@lombard.finance/sdk-demo",
+  "description": "Lombard SDK Demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "homepage": "/sdk-demo",
+  "buildFolderName": "build",
+  "scripts": {
+    "start": "vite --mode prod",
+    "build": "tsc --noEmit && vite build --mode prod",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint-staged": "lint-staged",
+    "types": "tsc --noEmit -p tsconfig.json",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" && eslint --fix --ext .tsx,.ts src/",
+    "prepare": "husky install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@bitcoin-js/tiny-secp256k1-asmjs": "2.2.3",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@lombard.finance/sdk": "^2",
+    "@mui/material": "^5.15.15",
+    "@mui/x-data-grid": "^7.5.0",
+    "@reduxjs/toolkit": "^2.2.3",
+    "@tanstack/react-query": "^5.62.9",
+    "axios": "^1",
+    "bignumber.js": "^9",
+    "bitcoinjs-lib": "6.1.5",
+    "notistack": "^3.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.54.2",
+    "react-intl-universal": "^2.11.1",
+    "react-redux": "^9.1.1",
+    "react-router-dom": "^6.22.3",
+    "react-uid": "^2.3.3",
+    "redux-persist": "^6.0.0",
+    "tss-react": "^4.9.14",
+    "viem": "2.x",
+    "wagmi": "^2.14.4",
+    "web3": "^4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "@vitejs/plugin-legacy": "^6.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "terser": "^5.36.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.9",
+    "vite-plugin-ejs": "^1.7.0",
+    "vite-plugin-svg-sprite": "^0.5.1",
+    "vite-plugin-node-polyfills": "^0.22.0",
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "reactSnap": {
+    "include": [
+      "/"
+    ],
+    "concurrency": 4,
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ],
+    "inlineCss": true
+  }
+}
