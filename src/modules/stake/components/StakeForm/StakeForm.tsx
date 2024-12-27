@@ -1,12 +1,9 @@
 import { Button, Card, CardContent, Stack } from '@mui/material';
-import { useConnection } from 'modules/auth';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
-import { IDepositFormValues } from 'modules/common/components/BtcAmountField/types';
-import { DEFAULT_CHAIN_ID, SATOSHI_SCALE } from 'modules/common/const';
-import { useDepositBtcAddress } from 'modules/stake/hooks/useDepositBtcAddress';
-import { useLBTCExchangeRate } from 'modules/stake/hooks/useLBTCExchangeRate';
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { RecaptchaField } from 'modules/common/components/RecaptchaField';
+import { DEFAULT_CHAIN_ID } from 'modules/common/const';
+import { FormProvider } from 'react-hook-form';
+import { useStakeForm } from '../../hooks/useStakeForm';
 import { BtcDepositAddress } from './components/BtcDepositAddress';
 import { ConfirmationTime } from './components/ConfirmationTime';
 import { FormConnectionGuard } from './components/FormConnectionGuard';
@@ -14,75 +11,64 @@ import { MintingFee } from './components/MintingFee';
 import { StakingSummary } from './components/StakingSummary';
 
 export const StakeForm = () => {
-  const { chainId } = useConnection();
-  const { hasAddress } = useDepositBtcAddress();
-  const { minAmount: minAmountSats } = useLBTCExchangeRate(
-    chainId || DEFAULT_CHAIN_ID,
-  );
-
-  const minAmount = useMemo(() => {
-    if (!minAmountSats) return 0;
-
-    return minAmountSats / SATOSHI_SCALE;
-  }, [minAmountSats]);
-
-  const { control, handleSubmit, watch } = useForm<IDepositFormValues>({
-    defaultValues: {
-      amount: '',
-      chain: DEFAULT_CHAIN_ID,
-    },
-    mode: 'onChange',
-  });
-
-  const amount = watch('amount');
-
-  const onSubmit = (data: IDepositFormValues) => {
-    console.log(data);
-  };
-
-  const isDisabled = !amount || !chainId || hasAddress;
+  const {
+    methods,
+    handleSubmit,
+    onSubmit,
+    amount,
+    minAmount,
+    chainId,
+    hasAddress,
+    isDisabled,
+  } = useStakeForm();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Card
-        sx={{
-          background: 'white',
-        }}
-      >
-        <CardContent
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card
           sx={{
-            border: '1px solid',
-            borderColor: '#E2E9E9',
-            m: 1,
+            background: 'white',
           }}
         >
-          <Stack gap={3}>
-            <BtcAmountField control={control} minAmount={minAmount} />
+          <CardContent
+            sx={{
+              border: '1px solid',
+              borderColor: '#E2E9E9',
+              m: 1,
+            }}
+          >
+            <Stack gap={3}>
+              <BtcAmountField control={methods.control} minAmount={minAmount} />
 
-            <FormConnectionGuard>
-              <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
+              <FormConnectionGuard>
+                <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
 
-              <StakingSummary
-                chainId={chainId || DEFAULT_CHAIN_ID}
-                amount={amount}
-              />
+                <StakingSummary
+                  chainId={chainId || DEFAULT_CHAIN_ID}
+                  amount={amount}
+                />
 
-              <ConfirmationTime />
+                <ConfirmationTime />
 
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={isDisabled}
-              >
-                {hasAddress ? 'Address already generated' : 'Generate BTC address'}
-              </Button>
+                <RecaptchaField />
 
-              <BtcDepositAddress />
-            </FormConnectionGuard>
-          </Stack>
-        </CardContent>
-      </Card>
-    </form>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={isDisabled}
+                >
+                  {hasAddress
+                    ? 'Address already generated'
+                    : 'Generate BTC address'}
+                </Button>
+
+                <BtcDepositAddress />
+              </FormConnectionGuard>
+            </Stack>
+          </CardContent>
+        </Card>
+      </form>
+    </FormProvider>
   );
 };

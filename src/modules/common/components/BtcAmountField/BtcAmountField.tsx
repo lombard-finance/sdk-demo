@@ -11,10 +11,10 @@ import { useTranslation } from 'modules/i18n';
 import { Control, Controller } from 'react-hook-form';
 import { ErrorAlert } from './ErrorAlert';
 import { translation } from './translation';
-import { IDepositFormValues } from './types';
+import { IStakeFormValues } from './types';
 
 interface IBtcAmountFieldProps {
-  control: Control<IDepositFormValues>;
+  control: Control<IStakeFormValues>;
   minAmount?: number;
 }
 

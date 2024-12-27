@@ -34,6 +34,7 @@
     "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.54.2",
     "react-intl-universal": "^2.11.1",
     "react-redux": "^9.1.1",
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
+    "@types/react-google-recaptcha": "^2.1.9",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "@vitejs/plugin-legacy": "^6.0.0",
@@ -68,8 +70,8 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.9",
     "vite-plugin-ejs": "^1.7.0",
-    "vite-plugin-svg-sprite": "^0.5.1",
     "vite-plugin-node-polyfills": "^0.22.0",
+    "vite-plugin-svg-sprite": "^0.5.1",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.2"
   },

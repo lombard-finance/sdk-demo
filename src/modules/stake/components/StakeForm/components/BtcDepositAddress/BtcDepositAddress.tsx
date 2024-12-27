@@ -8,10 +8,11 @@ import { useDepositBtcAddress } from '../../../../hooks/useDepositBtcAddress';
 
 export const BtcDepositAddress = () => {
   const { keys, t } = useTranslation(globalTranslation);
-  const { depositAddress, isLoading } = useDepositBtcAddress();
   const { address, chainId } = useConnection();
   const [isCopied, setIsCopied] = useState(false);
 
+  const { depositAddress, isLoading } = useDepositBtcAddress();
+  
   if (isLoading || !depositAddress) return null;
 
   const handleCopy = () => {

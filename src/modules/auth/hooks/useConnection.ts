@@ -1,16 +1,17 @@
 import { useAccount, useChainId, useConnections, useDisconnect } from 'wagmi';
 
 export function useConnection() {
-  const { address } = useAccount();
+  const { address, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const chainId = useChainId();
 
   const connectors = useConnections();
-  const isConnected = !!address;
+  const isConnected = !!address && !!connector;
   const connectedWallet = connectors[0];
 
   if (isConnected) {
     return {
+      connector,
       address: address as `0x${string}`,
       isConnected: true,
       connectedWallet,
@@ -20,6 +21,7 @@ export function useConnection() {
   }
 
   return {
+    connector: undefined,
     address: undefined,
     isConnected: false,
     connectedWallet,

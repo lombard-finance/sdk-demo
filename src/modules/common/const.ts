@@ -1,18 +1,12 @@
-import { OChainId } from '@lombard.finance/sdk';
-import { Seconds, TEnv } from './types';
+import { OChainId, TEnv } from '@lombard.finance/sdk';
+import { Seconds } from './types';
 
 export const ROOT_PATH = '/';
 
 export const ACTION_CACHE: Seconds = 60;
 export const ACTION_CACHE_LONG: Seconds = 600;
 
-export const metaEnv = import.meta.env;
-export const CURRENT_ENV = metaEnv.VITE_ENV as TEnv;
-export const IS_PROD = CURRENT_ENV === 'prod';
-export const IS_STAGE = CURRENT_ENV === 'stage' || !IS_PROD;
-export const IS_LOCAL = metaEnv.VITE_IS_LOCAL === 'true';
-export const NAME = metaEnv.VITE_NAME;
-export const VERSION = metaEnv.VITE_VERSION;
+export const CURRENT_ENV = 'stage' as TEnv
 
 export const DEFAULT_CHAIN_ID = OChainId.holesky;
 
