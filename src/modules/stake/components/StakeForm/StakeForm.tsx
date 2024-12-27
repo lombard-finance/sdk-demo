@@ -2,16 +2,17 @@ import { Card, CardContent, Stack } from '@mui/material';
 import { useConnection } from 'modules/auth';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { IDepositFormValues } from 'modules/common/components/BtcAmountField/types';
-import { Connect } from 'modules/common/components/Connect';
 import { DEFAULT_CHAIN_ID, SATOSHI_SCALE } from 'modules/common/const';
 import { useLBTCExchangeRate } from 'modules/stake/hooks/useLBTCExchangeRate';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { ConfirmationTime } from './components/ConfirmationTime';
+import { FormConnectionGuard } from './components/FormConnectionGuard';
 import { MintingFee } from './components/MintingFee';
 import { StakingSummary } from './components/StakingSummary';
 
 export const StakeForm = () => {
-  const { isConnected, chainId } = useConnection();
+  const { chainId } = useConnection();
   const { minAmount: minAmountSats } = useLBTCExchangeRate(
     chainId || DEFAULT_CHAIN_ID,
   );
@@ -52,21 +53,15 @@ export const StakeForm = () => {
         >
           <Stack gap={3}>
             <BtcAmountField control={control} minAmount={minAmount} />
-            {isConnected ? (
-              <>
-                <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
-                <StakingSummary
-                  chainId={chainId || DEFAULT_CHAIN_ID}
-                  amount={amount}
-                />
-              </>
-            ) : (
-              <Stack direction="row" alignItems="center">
-                <Connect size="large" sx={{ width: '100%' }}>
-                  Connect wallet
-                </Connect>
-              </Stack>
-            )}
+
+            <FormConnectionGuard>
+              <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
+              <StakingSummary
+                chainId={chainId || DEFAULT_CHAIN_ID}
+                amount={amount}
+              />
+              <ConfirmationTime />
+            </FormConnectionGuard>
           </Stack>
         </CardContent>
       </Card>
