@@ -5,14 +5,16 @@ import { IDepositFormValues } from 'modules/common/components/BtcAmountField/typ
 import { Connect } from 'modules/common/components/Connect';
 import { DEFAULT_CHAIN_ID } from 'modules/common/const';
 import { useForm } from 'react-hook-form';
+import { MintingFee } from './components/MintingFee';
 
 export const StakeForm = () => {
-  const { isConnected } = useConnection();
+  const { isConnected, chainId } = useConnection();
   const { control, handleSubmit } = useForm<IDepositFormValues>({
     defaultValues: {
       amount: '',
       chain: DEFAULT_CHAIN_ID,
     },
+    mode: 'onChange',
   });
 
   const onSubmit = (data: IDepositFormValues) => {
@@ -35,14 +37,15 @@ export const StakeForm = () => {
         >
           <Stack gap={2}>
             <BtcAmountField control={control} />
-
-            <Stack direction="row" alignItems="center">
-              {!isConnected && (
+            {isConnected ? (
+              <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
+            ) : (
+              <Stack direction="row" alignItems="center">
                 <Connect size="large" sx={{ width: '100%' }}>
                   Connect wallet
                 </Connect>
-              )}
-            </Stack>
+              </Stack>
+            )}
           </Stack>
         </CardContent>
       </Card>
