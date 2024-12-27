@@ -61,10 +61,12 @@ export const StakeForm = () => {
 
             <FormConnectionGuard>
               <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
+
               <StakingSummary
                 chainId={chainId || DEFAULT_CHAIN_ID}
                 amount={amount}
               />
+
               <ConfirmationTime />
 
               <Button

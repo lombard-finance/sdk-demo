@@ -31,7 +31,11 @@ export function Layout({ left, right }: LayoutProps): JSX.Element {
         </Container>
       </Stack>
 
-      <Stack height="100%" flex={1} sx={{ backgroundColor: 'customMain.100' }}>
+      <Stack
+        height="100%"
+        flex={1}
+        sx={{ backgroundColor: 'customMain.100', overflowY: 'auto' }}
+      >
         <Container
           maxWidth="sm"
           sx={{

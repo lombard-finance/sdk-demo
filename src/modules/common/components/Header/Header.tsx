@@ -1,25 +1,11 @@
 import { Box, ButtonBase, Stack, Typography } from '@mui/material';
-import { config } from 'config';
 import { Link } from 'react-router-dom';
-import { useAccount, useConnections } from 'wagmi';
 import { Connect } from '../Connect';
 import { Logo } from '../Logo';
 
 const HOME_PATH = '/';
 
 export function Header(): JSX.Element {
-  const connections = useConnections({
-    config,
-  });
-  const { address } = useAccount({
-    config,
-  });
-
-  console.log({
-    address,
-    connections,
-  });
-
   return (
     <Stack
       component="header"
