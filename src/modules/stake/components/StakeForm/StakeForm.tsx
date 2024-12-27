@@ -3,9 +3,11 @@ import { useConnection } from 'modules/auth';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { IDepositFormValues } from 'modules/common/components/BtcAmountField/types';
 import { DEFAULT_CHAIN_ID, SATOSHI_SCALE } from 'modules/common/const';
+import { useDepositBtcAddress } from 'modules/stake/hooks/useDepositBtcAddress';
 import { useLBTCExchangeRate } from 'modules/stake/hooks/useLBTCExchangeRate';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { BtcDepositAddress } from './components/BtcDepositAddress';
 import { ConfirmationTime } from './components/ConfirmationTime';
 import { FormConnectionGuard } from './components/FormConnectionGuard';
 import { MintingFee } from './components/MintingFee';
@@ -13,6 +15,7 @@ import { StakingSummary } from './components/StakingSummary';
 
 export const StakeForm = () => {
   const { chainId } = useConnection();
+  const { hasAddress } = useDepositBtcAddress();
   const { minAmount: minAmountSats } = useLBTCExchangeRate(
     chainId || DEFAULT_CHAIN_ID,
   );
@@ -37,7 +40,7 @@ export const StakeForm = () => {
     console.log(data);
   };
 
-  const isDisabled = !amount || !chainId;
+  const isDisabled = !amount || !chainId || hasAddress;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,8 +73,10 @@ export const StakeForm = () => {
                 fullWidth
                 disabled={isDisabled}
               >
-                Generate BTC address
+                {hasAddress ? 'Address already generated' : 'Generate BTC address'}
               </Button>
+
+              <BtcDepositAddress />
             </FormConnectionGuard>
           </Stack>
         </CardContent>

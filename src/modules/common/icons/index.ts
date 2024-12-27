@@ -9,6 +9,7 @@ export * from './tokens';
 export { default as AngleDownIcon } from './angle-down.svg?react';
 export { default as ArrowLeft } from './arrow-left.svg?react';
 export { default as ArrowRight } from './arrow-right.svg?react';
+export { default as CheckIcon } from './check-icon.svg?react';
 export { default as ChevronDownIcon } from './chevron-down.svg?react';
 export { default as ChevronUpIcon } from './chevron-up.svg?react';
 export { default as CloseIcon } from './close-icon.svg?react';
