@@ -26,16 +26,19 @@ interface IUseValidationAmount {
 export const useValidateAmount = ({
   balance: rawBalance,
   maxAmount: rawMaxAmount = rawBalance,
-  minAmount: rawAmount,
+  minAmount: rawAmount = new BigNumber(0),
   token,
   validationMessages,
 }: IUseValidationAmount): TUseValidateAmount => {
-  const balance = useMemo(() => new BigNumber(rawBalance || 0), [rawBalance]);
+  const balance = useMemo(
+    () => (rawBalance ? new BigNumber(rawBalance) : undefined),
+    [rawBalance],
+  );
   const maxAmount = useMemo(
-    () => new BigNumber(rawMaxAmount || 0),
+    () => (rawMaxAmount ? new BigNumber(rawMaxAmount) : undefined),
     [rawMaxAmount],
   );
-  const minAmount = useMemo(() => new BigNumber(rawAmount || 0), [rawAmount]);
+  const minAmount = useMemo(() => new BigNumber(rawAmount), [rawAmount]);
 
   const validationTexts = useLocaleMemo<IValidationMessage>(
     () => ({
@@ -43,13 +46,15 @@ export const useValidateAmount = ({
       isNaN: t('validation.numberOnly'),
       isZero: t('validation.required'),
       isLessThanMinAmount: t('validation.min', { value: minAmount.toFormat() }),
-      isGreaterMax: t('validation.max', { value: maxAmount.toFormat() }),
+      isGreaterMax: maxAmount
+        ? t('validation.max', { value: maxAmount.toFormat() })
+        : undefined,
       isLowBalance: token
         ? t('validation.notEnoughToken', { token })
         : t('validation.lowBalance'),
       ...validationMessages,
     }),
-    [minAmount, maxAmount, validationMessages, token],
+    [minAmount, maxAmount, validationMessages],
   );
 
   return useCallback(
@@ -81,7 +86,7 @@ export const useValidateAmount = ({
         return validationTexts.isLowBalance;
       }
 
-      if (currentAmount.isGreaterThan(maxAmount)) {
+      if (maxAmount && currentAmount.isGreaterThan(maxAmount)) {
         return validationTexts.isGreaterMax;
       }
 

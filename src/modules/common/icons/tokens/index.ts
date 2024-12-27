@@ -9,3 +9,7 @@ export { default as lbtcIcon } from './lbtc.webp';
 
 export { default as wbtcSpriteIcon } from './wbtc.svg';
 export { default as WBTCIcon } from './wbtc.svg?react';
+
+export { default as btcSpriteIcon } from './bitcoin.svg';
+export { default as BTCIcon } from './bitcoin.svg?react';
+
