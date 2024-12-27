@@ -1,4 +1,4 @@
-import { Card, CardContent, Stack } from '@mui/material';
+import { Button, Card, CardContent, Stack } from '@mui/material';
 import { useConnection } from 'modules/auth';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { IDepositFormValues } from 'modules/common/components/BtcAmountField/types';
@@ -37,6 +37,8 @@ export const StakeForm = () => {
     console.log(data);
   };
 
+  const isDisabled = !amount || !chainId;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Card
@@ -61,6 +63,15 @@ export const StakeForm = () => {
                 amount={amount}
               />
               <ConfirmationTime />
+
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={isDisabled}
+              >
+                Generate BTC address
+              </Button>
             </FormConnectionGuard>
           </Stack>
         </CardContent>

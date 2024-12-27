@@ -14,9 +14,7 @@ export const IS_LOCAL = metaEnv.VITE_IS_LOCAL === 'true';
 export const NAME = metaEnv.VITE_NAME;
 export const VERSION = metaEnv.VITE_VERSION;
 
-export const DEFAULT_CHAIN_ID = IS_PROD ? OChainId.ethereum : OChainId.holesky;
-// Vault only supports Ethereum mainnet for now
-export const DEFAULT_VAULT_CHAIN_ID = OChainId.ethereum;
+export const DEFAULT_CHAIN_ID = OChainId.holesky;
 
 export const DECIMAL_PLACES_ZERO = 0;
 export const DECIMAL_PLACES = 4;
