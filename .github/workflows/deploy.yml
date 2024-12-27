@@ -44,7 +44,7 @@ jobs:
 
         if: ${{ github.event.inputs.api == 'PROD' }}
         run: |
-          yarn build:prod
+          yarn build
           yarn postbuild
 
       - name: Set AWS credentials
