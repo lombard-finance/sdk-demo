@@ -9,7 +9,7 @@ on:
         description: Target
         required: true
         options:
-          - PROD
+          - PROD #demo-sdk.lombard.finance
       api:
         type: choice
         description: API
