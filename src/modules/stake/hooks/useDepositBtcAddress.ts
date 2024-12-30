@@ -10,6 +10,7 @@ export const useDepositBtcAddress = () => {
     data: depositAddress,
     isLoading,
     error,
+    refetch: refetchDepositBtcAddress,
   } = useQuery({
     queryKey: ['depositBtcAddress', address, chainId],
     queryFn: async () => {
@@ -30,5 +31,6 @@ export const useDepositBtcAddress = () => {
     isLoading,
     error,
     hasAddress: !!depositAddress,
+    refetch: refetchDepositBtcAddress,
   };
 };

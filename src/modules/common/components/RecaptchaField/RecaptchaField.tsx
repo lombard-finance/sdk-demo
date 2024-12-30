@@ -1,4 +1,4 @@
-import { useDepositBtcAddress } from 'modules/stake/hooks/useDepositBtcAddress';
+import { useStakeForm } from 'modules/stake/hooks/useStakeForm';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useController, useFormContext } from 'react-hook-form';
 
@@ -17,9 +17,9 @@ export function RecaptchaField() {
     rules: { required: true },
   });
 
-  const { depositAddress, isLoading } = useDepositBtcAddress();
+  const { hasAddress, needsSignature, isLoading } = useStakeForm();
 
-  if (isLoading || depositAddress) {
+  if (isLoading || (hasAddress && !needsSignature)) {
     return null;
   }
 

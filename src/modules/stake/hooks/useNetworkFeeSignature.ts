@@ -6,7 +6,7 @@ import { CURRENT_ENV } from 'modules/common/const';
 export const useNetworkFeeSignature = () => {
   const { address, chainId } = useConnection();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['networkFeeSignature', address, chainId],
     queryFn: async () => {
       if (!address || !chainId || !isValidChain(chainId)) return undefined;
@@ -23,7 +23,10 @@ export const useNetworkFeeSignature = () => {
   return {
     hasSignature: data?.hasSignature ?? false,
     isExpired: data?.isDelayed ?? false,
-    expirationDate: data?.expirationDate ? new Date(data.expirationDate) : undefined,
+    expirationDate: data?.expirationDate
+      ? new Date(Number(data.expirationDate) * 1000)
+      : undefined,
     isLoading,
+    refetch,
   };
 };

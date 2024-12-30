@@ -1,3 +1,4 @@
+import { isValidChain } from '@lombard.finance/sdk';
 import { Alert, Button, Card, CardContent, Stack } from '@mui/material';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { RecaptchaField } from 'modules/common/components/RecaptchaField';
@@ -5,6 +6,7 @@ import { DEFAULT_CHAIN_ID } from 'modules/common/const';
 import { FormProvider } from 'react-hook-form';
 import { useNetworkFeeSignature } from '../../hooks/useNetworkFeeSignature';
 import { useStakeForm } from '../../hooks/useStakeForm';
+import { isEthereumChain } from '../../utils/isEthereumChain';
 import { BtcDepositAddress } from './components/BtcDepositAddress';
 import { ConfirmationTime } from './components/ConfirmationTime';
 import { FormConnectionGuard } from './components/FormConnectionGuard';
@@ -20,12 +22,19 @@ export const StakeForm = () => {
     minAmount,
     chainId,
     hasAddress,
-    isDisabled,
   } = useStakeForm();
 
   const { hasSignature, isExpired, expirationDate } = useNetworkFeeSignature();
 
-  const showGenerateButton = !hasAddress || (hasSignature && isExpired);
+  const isEthereum =
+    chainId && isValidChain(chainId) && isEthereumChain(chainId);
+
+  const needsAuthorization = isEthereum && (!hasSignature || isExpired);
+
+  const showGenerateButton = !hasAddress || needsAuthorization;
+
+  const isDisabled =
+    !amount || !chainId || (hasAddress && (!isEthereum || hasSignature));
 
   return (
     <FormProvider {...methods}>
@@ -55,8 +64,8 @@ export const StakeForm = () => {
 
                 <ConfirmationTime />
 
-                {hasSignature && !isExpired && expirationDate && (
-                  <Alert severity="info">
+                {isEthereum && hasSignature && !isExpired && expirationDate && (
+                  <Alert severity="success">
                     Deposit window open until {expirationDate.toLocaleString()}
                   </Alert>
                 )}
@@ -71,7 +80,9 @@ export const StakeForm = () => {
                       fullWidth
                       disabled={isDisabled}
                     >
-                      Generate BTC address
+                      {hasAddress && needsAuthorization
+                        ? 'Authorize'
+                        : 'Generate BTC address'}
                     </Button>
                   </>
                 )}

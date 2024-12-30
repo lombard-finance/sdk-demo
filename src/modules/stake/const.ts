@@ -22,3 +22,8 @@ export const STEPS = {
   DEPOSIT_ADDRESS: 2,
   MONITOR_DEPOSITS: 3,
 } as const;
+
+export const ETHEREUM_CHAINS: TChainId[] = [
+  OChainId.ethereum,
+  OChainId.holesky,
+];
