@@ -1,8 +1,9 @@
-import { Button, Card, CardContent, Stack } from '@mui/material';
+import { Alert, Button, Card, CardContent, Stack } from '@mui/material';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { RecaptchaField } from 'modules/common/components/RecaptchaField';
 import { DEFAULT_CHAIN_ID } from 'modules/common/const';
 import { FormProvider } from 'react-hook-form';
+import { useNetworkFeeSignature } from '../../hooks/useNetworkFeeSignature';
 import { useStakeForm } from '../../hooks/useStakeForm';
 import { BtcDepositAddress } from './components/BtcDepositAddress';
 import { ConfirmationTime } from './components/ConfirmationTime';
@@ -21,6 +22,10 @@ export const StakeForm = () => {
     hasAddress,
     isDisabled,
   } = useStakeForm();
+
+  const { hasSignature, isExpired, expirationDate } = useNetworkFeeSignature();
+
+  const showGenerateButton = !hasAddress || (hasSignature && isExpired);
 
   return (
     <FormProvider {...methods}>
@@ -50,18 +55,26 @@ export const StakeForm = () => {
 
                 <ConfirmationTime />
 
-                <RecaptchaField />
+                {hasSignature && !isExpired && expirationDate && (
+                  <Alert severity="info">
+                    Deposit window open until {expirationDate.toLocaleString()}
+                  </Alert>
+                )}
 
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isDisabled}
-                >
-                  {hasAddress
-                    ? 'Address already generated'
-                    : 'Generate BTC address'}
-                </Button>
+                {showGenerateButton && (
+                  <>
+                    <RecaptchaField />
+
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                      disabled={isDisabled}
+                    >
+                      Generate BTC address
+                    </Button>
+                  </>
+                )}
 
                 <BtcDepositAddress />
               </FormConnectionGuard>
