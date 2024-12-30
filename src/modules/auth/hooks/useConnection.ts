@@ -6,8 +6,8 @@ export function useConnection() {
   const chainId = useChainId();
 
   const connectors = useConnections();
-  const isConnected = !!address && !!connector;
   const connectedWallet = connectors[0];
+  const isConnected = !!address && !!connector && !!connectedWallet;
 
   if (isConnected) {
     return {

@@ -1,4 +1,4 @@
-import { createConfig, http } from 'wagmi';
+import { createConfig, createStorage, http, noopStorage } from 'wagmi';
 import { baseSepolia, bsc, bscTestnet, holesky } from 'wagmi/chains';
 import { injected, metaMask } from 'wagmi/connectors';
 
@@ -22,5 +22,11 @@ export const config = createConfig({
     [bscTestnetFixed.id]: http(),
     [bsc.id]: http(),
   },
+  storage: createStorage({
+    storage:
+      typeof window !== 'undefined' && window.localStorage
+        ? window.localStorage
+        : noopStorage,
+  }),
   connectors: [injected(), metaMask()],
 });
