@@ -23,14 +23,18 @@ const ETHEREUM_CHAINS: TChainId[] = [OChainId.ethereum, OChainId.holesky];
 
 export const useStakeForm = () => {
   const { chainId, address, connector } = useConnection();
+
   const chain = chainId && isValidChain(chainId) ? chainId : DEFAULT_CHAIN_ID;
+
   const isEthereumChain = ETHEREUM_CHAINS.includes(chain);
+
   const {
     hasSignature,
     isExpired,
     isLoading: isNetworkFeeSignatureLoading,
     refetch: refetchNetworkFeeSignature,
   } = useNetworkFeeSignature();
+
   const {
     hasAddress,
     isLoading: isDepositBtcAddressLoading,
