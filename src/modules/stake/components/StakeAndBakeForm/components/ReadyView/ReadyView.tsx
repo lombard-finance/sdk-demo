@@ -76,7 +76,7 @@ export const ReadyView = ({
         </>
       ) : (
         <Alert severity="info">
-          Protocol approval valid until{' '}
+          Stake & Bake authorization valid until{' '}
           {stakeAndBakeSignature.expirationDate?.toLocaleString()}
         </Alert>
       )}
