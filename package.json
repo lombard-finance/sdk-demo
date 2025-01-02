@@ -23,7 +23,7 @@
     "@bitcoin-js/tiny-secp256k1-asmjs": "2.2.3",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@lombard.finance/sdk": "^2",
+    "@lombard.finance/sdk": "^2.0.15",
     "@mui/material": "^5.15.15",
     "@mui/x-data-grid": "^7.5.0",
     "@reduxjs/toolkit": "^2.2.3",

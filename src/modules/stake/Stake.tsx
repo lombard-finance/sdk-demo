@@ -1,28 +1,32 @@
 import { Stack } from '@mui/material';
 import { Layout } from 'modules/common/components/Layout';
-import { useState } from 'react';
-import { StakeForm } from './components/StakeForm';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { StakeStatuses } from './components/StakeStatuses';
 import { StakeTabs } from './components/StakeTabs';
 
 const tabs = [
-  { value: '/', label: 'Stake' },
-  { value: 'stake-and-bake', label: 'Stake & Bake', disabled: true },
+  { value: '/stake', label: 'Stake' },
+  { value: '/stake/stake-and-bake', label: 'Stake & Bake' },
 ];
 
 export function Stake(): JSX.Element {
-  const [value, setValue] = useState<string>('/');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: string) => {
+    navigate(newValue);
+  };
 
   return (
     <Layout
       left={
         <Stack gap={4}>
           <StakeTabs
-            value={value}
-            onChange={(_, newValue) => setValue(newValue)}
+            value={location.pathname}
+            onChange={handleTabChange}
             options={tabs}
           />
-          <StakeForm />
+          <Outlet />
         </Stack>
       }
       right={<StakeStatuses />}

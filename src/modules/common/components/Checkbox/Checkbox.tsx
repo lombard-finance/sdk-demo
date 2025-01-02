@@ -1,28 +1,35 @@
-import { Checkbox as CheckboxComponent, CheckboxProps } from '@mui/material';
+import {
+  Box,
+  Checkbox as CheckboxComponent,
+  CheckboxProps,
+  SxProps,
+  Theme,
+} from '@mui/material';
 
 import { default as CheckedIcon } from './assets/checked.svg?react';
 import { default as UncheckedIcon } from './assets/unchecked.svg?react';
-import { useCheckboxStyles } from './useCheckboxStyles';
 
 export interface ICheckboxProps extends CheckboxProps {}
+
+const checkboxSx: SxProps<Theme> = {
+  width: 32,
+  height: 32,
+  fontSize: theme => theme.typography.pxToRem(22),
+};
 
 export const Checkbox = ({
   disabled,
   classes: classesProp,
   ...rest
 }: ICheckboxProps): JSX.Element => {
-  const { classes } = useCheckboxStyles();
-
-  const iconClassName = classes.icon;
-
-  const icon = <UncheckedIcon className={iconClassName} />;
-  const checkedIcon = <CheckedIcon className={iconClassName} />;
+  const icon = <Box component={UncheckedIcon} sx={checkboxSx} />;
+  const checkedIcon = <Box component={CheckedIcon} sx={checkboxSx} />;
 
   return (
     <CheckboxComponent
       {...rest}
       checkedIcon={checkedIcon}
-      classes={classesProp}
+      sx={checkboxSx}
       disabled={disabled}
       icon={icon}
     />

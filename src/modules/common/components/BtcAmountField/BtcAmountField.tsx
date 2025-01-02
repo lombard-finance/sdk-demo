@@ -8,20 +8,19 @@ import {
 } from 'modules/common/const';
 import { useValidateAmount } from 'modules/common/hooks/useValidateAmount';
 import { useTranslation } from 'modules/i18n';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { ErrorAlert } from './ErrorAlert';
 import { translation } from './translation';
-import { IStakeFormValues } from './types';
 
-interface IBtcAmountFieldProps {
-  control: Control<IStakeFormValues>;
+interface IBtcAmountFieldProps<T extends FieldValues> {
+  control: Control<T>;
   minAmount?: number;
 }
 
-export function BtcAmountField({
+export function BtcAmountField<T extends FieldValues>({
   control,
   minAmount,
-}: IBtcAmountFieldProps): JSX.Element {
+}: IBtcAmountFieldProps<T>): JSX.Element {
   const { keys, t } = useTranslation(translation);
 
   const validateAmount = useValidateAmount({
@@ -32,7 +31,7 @@ export function BtcAmountField({
   return (
     <Controller
       control={control}
-      name="amount"
+      name={'amount' as Path<T>}
       rules={{
         validate: validateAmount,
       }}

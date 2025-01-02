@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { config } from 'config';
 import { QueryLoading } from 'modules/common/components/QueryLoading';
+import { SnackbarProvider } from 'modules/common/providers/SnackbarProvider';
 import { useInitializeLocale } from 'modules/i18n';
 import { lightTheme } from 'modules/themes';
 import { WagmiProvider } from 'wagmi';
@@ -19,9 +20,11 @@ export function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <ThemeProvider theme={lightTheme}>
-            <CssBaseline />
+            <SnackbarProvider>
+              <CssBaseline />
 
-            {isInitialized ? <AppRoutes /> : <QueryLoading isAbsolute />}
+              {isInitialized ? <AppRoutes /> : <QueryLoading isAbsolute />}
+            </SnackbarProvider>
           </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>

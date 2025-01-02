@@ -1257,10 +1257,10 @@
   dependencies:
     "@lit-labs/ssr-dom-shim" "^1.0.0"
 
-"@lombard.finance/sdk@^2":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@lombard.finance/sdk/-/sdk-2.0.7.tgz#9d73cefd31605b70e1773d76ab169680cf6d29a3"
-  integrity sha512-nOhVAgl0UNhkfBkKeEYZOjEMVovxV7AW3sqauE/+ndcXAp/B1SoB9/xwHsr+CzDG1/O/zjrFuhfHMu8IbzKqaw==
+"@lombard.finance/sdk@^2.0.15":
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/@lombard.finance/sdk/-/sdk-2.0.15.tgz#ff3c1a0350f3b17c53e71bd22a2533c469270c3d"
+  integrity sha512-KNpCE11Nq8s/qqRCkvZfV18GypgJ6+d/ESjkN22RJa3U6CRO/eh2PjZVlgrfhelBUUmnX9MWWWbQX53Y9BAaMQ==
 
 "@metamask/eth-json-rpc-provider@^1.0.0":
   version "1.0.1"

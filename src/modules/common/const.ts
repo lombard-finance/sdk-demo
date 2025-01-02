@@ -6,7 +6,7 @@ export const ROOT_PATH = '/';
 export const ACTION_CACHE: Seconds = 60;
 export const ACTION_CACHE_LONG: Seconds = 600;
 
-export const CURRENT_ENV = 'stage' as TEnv
+export const CURRENT_ENV = 'stage' as TEnv;
 
 export const DEFAULT_CHAIN_ID = OChainId.holesky;
 
@@ -25,3 +25,5 @@ export const SATOSHI_SCALE = 10 ** BTC_DECIMALS;
 export const ONativeToken = {
   BTC: 'BTC',
 };
+
+export const ONE_DAY_SECONDS = 24 * 60 * 60;
