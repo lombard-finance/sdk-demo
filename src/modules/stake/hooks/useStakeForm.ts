@@ -63,7 +63,7 @@ export const useStakeForm = () => {
 
   const { handleSubmit, watch } = methods;
   const amount = watch('amount');
-
+  const captchaToken = watch('captchaToken');
   const onSubmit = async (data: IStakeFormValues) => {
     try {
       const provider = (await connector?.getProvider()) as IEIP1193Provider;
@@ -116,5 +116,6 @@ export const useStakeForm = () => {
     hasAddress,
     needsSignature,
     isLoading,
+    captchaToken,
   };
 };

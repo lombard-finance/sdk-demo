@@ -6,10 +6,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useConnection } from 'modules/auth/hooks/useConnection';
 import { getChainIcon } from 'modules/auth/utils/getChainIcon';
 import { SUPPORTED_CHAINS } from 'modules/stake/const';
 import { useState } from 'react';
-import { useChainId, useSwitchChain } from 'wagmi';
+import { useSwitchChain } from 'wagmi';
 
 interface NetworkButtonProps extends ButtonProps {
   isConnected: boolean;
@@ -19,7 +20,7 @@ export const NetworkButton = ({
   isConnected,
   ...props
 }: NetworkButtonProps) => {
-  const chainId = useChainId();
+  const { chainId } = useConnection();
   const { switchChain, isPending } = useSwitchChain();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 

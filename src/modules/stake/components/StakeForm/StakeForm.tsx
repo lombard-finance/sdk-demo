@@ -22,6 +22,7 @@ export const StakeForm = () => {
     minAmount,
     chainId,
     hasAddress,
+    captchaToken,
   } = useStakeForm();
 
   const { hasSignature, isExpired, expirationDate } = useNetworkFeeSignature();
@@ -33,8 +34,7 @@ export const StakeForm = () => {
 
   const showGenerateButton = !hasAddress || needsAuthorization;
 
-  const isDisabled =
-    !amount || !chainId || (hasAddress && (!isEthereum || hasSignature));
+  const isDisabled = !amount || !chainId || !captchaToken;
 
   return (
     <FormProvider {...methods}>
@@ -52,9 +52,12 @@ export const StakeForm = () => {
             }}
           >
             <Stack gap={3}>
-              <BtcAmountField control={methods.control} minAmount={minAmount} />
+              <FormConnectionGuard methods={methods}>
+                <BtcAmountField
+                  control={methods.control}
+                  minAmount={minAmount}
+                />
 
-              <FormConnectionGuard>
                 <MintingFee chainId={chainId || DEFAULT_CHAIN_ID} />
 
                 <StakingSummary

@@ -43,6 +43,7 @@ export const Connect = ({ children, ...props }: Props) => {
             {...props}
           />
         </Stack>
+
         <WalletPopover
           open={Boolean(anchorEl)}
           anchorEl={anchorEl}

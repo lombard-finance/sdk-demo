@@ -1,13 +1,14 @@
-import { useAccount, useChainId, useConnections, useDisconnect } from 'wagmi';
+import { useAccount, useConnections, useDisconnect } from 'wagmi';
 
 export function useConnection() {
   const { address, connector } = useAccount();
   const { disconnect: disconnectFromWagmi } = useDisconnect();
-  const chainId = useChainId();
 
   const connectors = useConnections();
   const connectedWallet = connectors[0];
   const isConnected = !!address && !!connector && !!connectedWallet;
+
+  const chainId = connectedWallet?.chainId;
 
   const disconnect = () => {
     connectors.forEach(connector => {
