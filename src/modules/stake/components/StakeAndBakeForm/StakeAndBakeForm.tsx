@@ -1,4 +1,5 @@
 import { Card, CardContent, Stack } from '@mui/material';
+import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { STAKE_AND_BAKE_STATES, StakeAndBakeState } from '../../const';
@@ -136,6 +137,8 @@ export const StakeAndBakeForm = () => {
             }}
           >
             <Stack gap={3}>
+              <BtcAmountField control={methods.control} minAmount={minAmount} />
+
               <FormConnectionGuard>{renderFormStep()}</FormConnectionGuard>
             </Stack>
           </CardContent>
