@@ -7,7 +7,7 @@ type FormValues = {
 };
 
 // Check if the recaptcha key is set in the environment variables
-const CAPTCHA_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '';
+const CAPTCHA_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY_STAGE || '';
 
 export function RecaptchaField() {
   const { control } = useFormContext<FormValues>();
