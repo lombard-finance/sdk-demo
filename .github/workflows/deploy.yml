@@ -41,6 +41,7 @@ jobs:
         working-directory: .
         env:
           NODE_OPTIONS: '--max-old-space-size=8192'
+          VITE_RECAPTCHA_SITE_KEY_STAGE: ${{ secrets.VITE_RECAPTCHA_SITE_KEY_STAGE }}
 
         if: ${{ github.event.inputs.api == 'PROD' }}
         run: |
