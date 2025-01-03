@@ -1,5 +1,6 @@
 import {
   getLBTCMintingFee,
+  getStakeAndBakeVaults,
   IEIP1193Provider,
   isValidChain,
   SATOSHI_SCALE,
@@ -20,7 +21,7 @@ import {
 import { useSnackbar } from 'notistack';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { getProtocolContracts, STAKE_AND_BAKE_STATES } from '../const';
+import { STAKE_AND_BAKE_STATES } from '../const';
 import { generateAddress } from '../utils/addressGeneration';
 import { isEthereumChain } from '../utils/isEthereumChain';
 import { useDepositBtcAddress } from './useDepositBtcAddress';
@@ -29,16 +30,9 @@ import { useNetworkFeeSignature } from './useNetworkFeeSignature';
 import { useStakeAndBakeSignature } from './useStakeAndBakeSignature';
 
 export interface IStakeAndBakeFormValues extends IStakeFormValues {
-  protocol: string;
-  spender?: string;
-  verifyingContract?: string;
-  callData?: string;
+  vaultKey: string;
+  captchaToken: string;
 }
-
-export type Protocol = {
-  name: string;
-  spender: string;
-};
 
 interface StakeAndBakeFormData extends IStakeAndBakeFormValues {
   step?: 'networkFee' | 'authorization';
@@ -54,14 +48,18 @@ interface StakeAndBakeAuthorizationArgs {
   provider: IEIP1193Provider;
   address: string;
   chainId: TChainId;
-  spender: string;
   amount: string | number;
   captchaToken: string;
 }
 
+const getExpirySeconds = () => {
+  return Math.floor(Date.now() / 1000 + ONE_DAY_SECONDS);
+};
+
 export const useStakeAndBakeForm = () => {
   const { chainId, address, connector } = useConnection();
-  const { hasAddress } = useDepositBtcAddress();
+  const { hasAddress, refetch: refetchDepositBtcAddress } =
+    useDepositBtcAddress();
   const { refetch: refetchNetworkFeeSignature, ...networkFeeSignature } =
     useNetworkFeeSignature();
 
@@ -74,7 +72,7 @@ export const useStakeAndBakeForm = () => {
     defaultValues: {
       amount: '',
       chain: chainId && isValidChain(chainId) ? chainId : DEFAULT_CHAIN_ID,
-      protocol: 'vault',
+      vaultKey: '',
       captchaToken: '',
     },
   });
@@ -82,26 +80,22 @@ export const useStakeAndBakeForm = () => {
   const { handleSubmit, watch } = methods;
   const chain = watch('chain');
   const amount = watch('amount');
-  const spender = watch('spender');
-  const selectedProtocol = watch('protocol');
-  const isCustomProtocol = selectedProtocol === 'custom';
+  const selectedVaultKey = watch('vaultKey');
   const captchaToken = watch('captchaToken');
 
-  const protocol: Protocol = isCustomProtocol
-    ? {
-        name: 'Custom',
-        spender: spender || '',
-      }
-    : getProtocolContracts(chain, selectedProtocol);
+  const vaults = useMemo(() => {
+    return getStakeAndBakeVaults(chain);
+  }, [chain]);
+
+  const selectedVault = useMemo(() => {
+    return vaults.find(vault => vault.key === selectedVaultKey);
+  }, [vaults, selectedVaultKey]);
 
   useEffect(() => {
-    const _protocol = getProtocolContracts(chain, selectedProtocol);
-    if (_protocol) {
-      methods.setValue('spender', _protocol.spender);
-    } else {
-      methods.setValue('spender', '');
+    if (vaults.length > 0 && !selectedVaultKey) {
+      methods.setValue('vaultKey', vaults[0].key);
     }
-  }, [selectedProtocol]);
+  }, [chain, vaults]);
 
   const { minAmount: minAmountSats } = useLBTCExchangeRate(chain);
   const minAmount = useMemo(() => {
@@ -109,12 +103,44 @@ export const useStakeAndBakeForm = () => {
     return minAmountSats / SATOSHI_SCALE;
   }, [minAmountSats]);
 
+  const generateBtcDepositAddress = async () => {
+    const provider = (await connector?.getProvider()) as IEIP1193Provider;
+    if (!provider || !address || !captchaToken || !selectedVault) {
+      throw new Error('Missing required fields');
+    }
+    if (!address || !chainId || !captchaToken) return;
+    const expirySeconds = getExpirySeconds();
+    const fee = await getLBTCMintingFee({
+      chainId: chain,
+    });
+
+    const { signature, typedData } = await signNetworkFee({
+      provider,
+      address,
+      chainId: chain,
+      fee: toSatoshi(fee.toString()).toString(),
+      expiry: expirySeconds,
+      env: CURRENT_ENV,
+    });
+
+    await generateAddress({
+      chainId: chain,
+      address,
+      signature,
+      eip712Data: typedData,
+      captchaToken,
+    });
+
+    await refetchNetworkFeeSignature();
+    await refetchDepositBtcAddress();
+  };
+
   const handleNetworkFeeAuthorization = async ({
     provider,
     address,
     chainId,
   }: NetworkFeeAuthorizationArgs) => {
-    const expirySeconds = Math.floor(Date.now() / 1000 + ONE_DAY_SECONDS);
+    const expirySeconds = getExpirySeconds();
     const fee = await getLBTCMintingFee({
       chainId,
     });
@@ -127,6 +153,16 @@ export const useStakeAndBakeForm = () => {
       expiry: expirySeconds,
       env: CURRENT_ENV,
     });
+
+    if (!hasAddress) {
+      await generateAddress({
+        chainId,
+        address,
+        signature,
+        eip712Data: typedData,
+        captchaToken,
+      });
+    }
 
     await storeNetworkFeeSignature({
       address,
@@ -145,10 +181,13 @@ export const useStakeAndBakeForm = () => {
     provider,
     address,
     chainId,
-    spender,
     amount,
     captchaToken,
   }: StakeAndBakeAuthorizationArgs) => {
+    if (!selectedVault) {
+      throw new Error('No vault selected');
+    }
+
     const expirySeconds = Math.floor(Date.now() / 1000 + ONE_DAY_SECONDS);
 
     const { signature, typedData } = await signStakeAndBake({
@@ -157,7 +196,7 @@ export const useStakeAndBakeForm = () => {
       chainId,
       value: toSatoshi(amount).toString(),
       expiry: expirySeconds,
-      spender,
+      vaultKey: selectedVault.key,
     });
 
     await storeStakeAndBakeSignature({
@@ -205,23 +244,6 @@ export const useStakeAndBakeForm = () => {
           }
           break;
 
-        case STAKE_AND_BAKE_STATES.AUTHORIZATION:
-          if (!stakeAndBakeSignature) {
-            if (!data.captchaToken || !protocol?.spender) {
-              throw new Error('Missing required fields');
-            }
-
-            await handleStakeAndBakeAuthorization({
-              provider,
-              address,
-              chainId: chain,
-              spender: protocol.spender,
-              amount,
-              captchaToken: data.captchaToken,
-            });
-          }
-          break;
-
         default:
           throw new Error('Invalid step');
       }
@@ -238,7 +260,7 @@ export const useStakeAndBakeForm = () => {
 
   const handleStakeAndBakeAuthorize = async () => {
     const provider = (await connector?.getProvider()) as IEIP1193Provider;
-    if (!provider || !address || !captchaToken || !protocol?.spender) {
+    if (!provider || !address || !captchaToken || !selectedVault) {
       throw new Error('Missing required fields');
     }
 
@@ -246,7 +268,6 @@ export const useStakeAndBakeForm = () => {
       provider,
       address,
       chainId: chain,
-      spender: protocol.spender,
       amount,
       captchaToken,
     });
@@ -260,12 +281,12 @@ export const useStakeAndBakeForm = () => {
     minAmount,
     chain,
     hasAddress,
-    selectedProtocol,
-    isCustomProtocol,
-    protocol,
+    selectedVault,
+    vaults,
     captchaToken,
     stakeAndBakeSignature,
     networkFeeSignature,
     handleStakeAndBakeAuthorize,
+    generateBtcDepositAddress,
   };
 };

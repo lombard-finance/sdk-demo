@@ -6,7 +6,8 @@ type FormValues = {
   captchaToken: string;
 };
 
-const CAPTCHA_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+// Check if the recaptcha key is set in the environment variables
+const CAPTCHA_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '';
 
 export function RecaptchaField() {
   const { control } = useFormContext<FormValues>();

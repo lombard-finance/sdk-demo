@@ -1,8 +1,17 @@
 import { isValidChain } from '@lombard.finance/sdk';
-import { Alert, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useConnection } from 'modules/auth';
+import { RecaptchaField } from 'modules/common/components/RecaptchaField';
 import { CheckIcon, CopyIcon } from 'modules/common/icons';
 import { globalTranslation, useTranslation } from 'modules/i18n';
+import { useStakeAndBakeForm } from 'modules/stake/hooks/useStakeAndBakeForm';
 import { useState } from 'react';
 import { useDepositBtcAddress } from '../../../../hooks/useDepositBtcAddress';
 
@@ -11,9 +20,46 @@ export const BtcDepositAddress = () => {
   const { address, chainId } = useConnection();
   const [isCopied, setIsCopied] = useState(false);
 
+  const { generateBtcDepositAddress } = useStakeAndBakeForm();
+
   const { depositAddress, isLoading } = useDepositBtcAddress();
-  
-  if (isLoading || !depositAddress) return null;
+
+  if (isLoading) {
+    return (
+      <Alert severity="info">
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          gap={1}
+          sx={{ width: '100%', flex: 1 }}
+        >
+          <Typography>Fetching deposit address...</Typography>
+          <CircularProgress size={16} />
+        </Stack>
+      </Alert>
+    );
+  }
+
+  if (!depositAddress) {
+    return (
+      <Stack gap={1}>
+        <RecaptchaField />
+
+        <Button
+          variant="contained"
+          onClick={() => {
+            generateBtcDepositAddress();
+          }}
+          sx={{
+            width: '100%',
+          }}
+        >
+          Generate Deposit Address
+        </Button>
+      </Stack>
+    );
+  }
 
   const handleCopy = () => {
     if (depositAddress) {

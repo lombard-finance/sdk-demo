@@ -1,3 +1,4 @@
+import { IStakeAndBakeVault } from '@lombard.finance/sdk';
 import {
   MenuItem,
   Select,
@@ -5,49 +6,43 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { getProtocolsForChain } from '../../../../const';
 
 interface IProtocolSelectorProps {
   isDisabled?: boolean;
+  vaults: IStakeAndBakeVault[];
 }
 
-const ALLOW_CUSTOM_PROTOCOL = false;
-
-export const ProtocolSelector = ({ isDisabled }: IProtocolSelectorProps) => {
+export const ProtocolSelector = ({
+  isDisabled,
+  vaults,
+}: IProtocolSelectorProps) => {
   const { watch, setValue } = useFormContext();
-  const protocol = watch('protocol');
-  const chain = watch('chain');
-
-  const protocols = useMemo(() => {
-    return getProtocolsForChain(chain);
-  }, [chain, protocol]);
+  const vaultKey = watch('vaultKey');
 
   const handleChange = (event: SelectChangeEvent) => {
-    setValue('protocol', event.target.value);
+    setValue('vaultKey', event.target.value);
   };
+  console.log({
+    vaults,
+  });
 
   return (
     <Stack gap={1}>
       <Typography component="label" fontWeight={500}>
-        Choose protocol
+        Choose vault
       </Typography>
 
       <Select
-        value={protocol || ''}
+        value={vaultKey || ''}
         onChange={handleChange}
         disabled={isDisabled}
       >
-        {Object.entries(protocols).map(([key, { name }]) => (
-          <MenuItem key={key} value={key}>
-            {name}
+        {vaults.map(vault => (
+          <MenuItem key={vault.key} value={vault.key}>
+            {vault.name}
           </MenuItem>
         ))}
-
-        {ALLOW_CUSTOM_PROTOCOL && (
-          <MenuItem value="custom">Custom network</MenuItem>
-        )}
       </Select>
     </Stack>
   );

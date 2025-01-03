@@ -56,7 +56,6 @@ export const STAKE_AND_BAKE_STATES = {
   DEFAULT: 'default',
   NETWORK_FEE: 'networkFee',
   CONFIRMATION: 'confirmation',
-  AUTHORIZATION: 'authorization',
   READY: 'ready',
 } as const;
 

@@ -1,4 +1,4 @@
-import { TChainId } from '@lombard.finance/sdk';
+import { IStakeAndBakeVault, TChainId } from '@lombard.finance/sdk';
 import { Alert, Button, Stack } from '@mui/material';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { RecaptchaField } from 'modules/common/components/RecaptchaField';
@@ -24,6 +24,7 @@ interface ReadyViewProps {
   };
   amount: string | number;
   chain: TChainId;
+  vaults: IStakeAndBakeVault[];
   handleStakeAndBakeAuthorize: () => Promise<void>;
 }
 
@@ -35,6 +36,7 @@ export const ReadyView = ({
   stakeAndBakeSignature,
   amount,
   chain,
+  vaults,
 }: ReadyViewProps) => {
   const isEthereum = isEthereumChain(chain);
 
@@ -46,7 +48,7 @@ export const ReadyView = ({
     <Stack gap={3}>
       <BtcAmountField control={methods.control} minAmount={minAmount} />
 
-      <ProtocolSelector />
+      <ProtocolSelector vaults={vaults} />
 
       <MintingFee chainId={chain} />
 

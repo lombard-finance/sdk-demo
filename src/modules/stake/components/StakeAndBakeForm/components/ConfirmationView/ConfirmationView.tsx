@@ -1,3 +1,4 @@
+import { IStakeAndBakeVault } from '@lombard.finance/sdk';
 import {
   Box,
   Button,
@@ -12,26 +13,26 @@ import { CopyButton } from 'modules/common/components/CopyButton';
 import { SummaryItem } from 'modules/stake/components/SummaryItem';
 import { SUPPORTED_CHAINS } from 'modules/stake/const';
 import { useDepositBtcAddress } from 'modules/stake/hooks/useDepositBtcAddress';
-import { Protocol } from 'modules/stake/hooks/useStakeAndBakeForm';
-import { useState } from 'react';
 
 interface IConfirmationViewProps {
   onBackClick: () => void;
   chain: number;
-  protocol: Protocol;
+  selectedVault: IStakeAndBakeVault;
+  isAccepted: boolean;
+  setIsAccepted: (isAccepted: boolean) => void;
 }
 
 export const ConfirmationView = ({
   onBackClick,
   chain,
-  protocol,
+  selectedVault,
+  isAccepted,
+  setIsAccepted,
 }: IConfirmationViewProps) => {
   const { depositAddress } = useDepositBtcAddress();
 
   const supportedChain = SUPPORTED_CHAINS[chain];
   const ChainIcon = getChainIcon(chain);
-
-  const [isAccepted, setIsAccepted] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsAccepted(event.target.checked);
@@ -78,12 +79,12 @@ export const ConfirmationView = ({
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                 }}
-                title={protocol.spender}
+                title={selectedVault.address}
                 fontSize={14}
               >
-                {protocol.spender}
+                {selectedVault.address}
               </Typography>
-              <CopyButton text={protocol.spender} />
+              <CopyButton text={selectedVault.address} />
             </>
           }
         />

@@ -9,7 +9,11 @@ import { CURRENT_ENV } from 'modules/common/const';
 export const useStakeAndBakeSignature = () => {
   const { address, chainId } = useConnection();
 
-  const { data, isLoading, refetch } = useQuery({
+  const {
+    data: signature,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['stakeAndBakeSignature', address],
     queryFn: async () => {
       if (!address || !chainId || !isValidChain(chainId)) return undefined;
@@ -24,9 +28,9 @@ export const useStakeAndBakeSignature = () => {
   });
 
   return {
-    signature: data?.signature,
-    expirationDate: (data as any)?.expiration_date
-      ? new Date(Number((data as any)?.expiration_date) * 1000)
+    signature: signature?.signature,
+    expirationDate: signature?.expirationDate
+      ? new Date(Number(signature.expirationDate) * 1000)
       : undefined,
     isLoading,
     refetch,

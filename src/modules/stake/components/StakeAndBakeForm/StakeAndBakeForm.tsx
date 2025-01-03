@@ -5,7 +5,6 @@ import { STAKE_AND_BAKE_STATES, StakeAndBakeState } from '../../const';
 import { useStakeAndBakeForm } from '../../hooks/useStakeAndBakeForm';
 import { isEthereumChain } from '../../utils/isEthereumChain';
 import { FormConnectionGuard } from '../StakeForm/components/FormConnectionGuard';
-import { AuthorizationView } from './components/AuthorizationView';
 import { ConfirmationView } from './components/ConfirmationView';
 import { DefaultView } from './components/DefaultView';
 import { NetworkFeeView } from './components/NetworkFeeView';
@@ -15,29 +14,27 @@ export const StakeAndBakeForm = () => {
   const [formState, setFormState] = useState<StakeAndBakeState>(
     STAKE_AND_BAKE_STATES.DEFAULT,
   );
+  const [isConfirmationAccepted, setIsConfirmationAccepted] = useState(false);
   const {
     methods,
     handleSubmit,
     onSubmit,
     chain,
     minAmount,
-    selectedProtocol,
-    isCustomProtocol,
+    selectedVault,
+    vaults,
     amount,
-    captchaToken,
     stakeAndBakeSignature,
     networkFeeSignature,
-    protocol,
     handleStakeAndBakeAuthorize,
   } = useStakeAndBakeForm();
 
   const handleStateTransition = async (data: any) => {
     const isEthereum = isEthereumChain(chain);
     const hasValidNetworkFee = !isEthereum || networkFeeSignature?.hasSignature;
-    const hasValidStakeAndBake = stakeAndBakeSignature?.signature;
 
     // If we have all required signatures, go to ready state
-    if (hasValidNetworkFee && hasValidStakeAndBake) {
+    if (hasValidNetworkFee && isConfirmationAccepted) {
       setFormState(STAKE_AND_BAKE_STATES.READY);
       return;
     }
@@ -57,11 +54,6 @@ export const StakeAndBakeForm = () => {
         break;
 
       case STAKE_AND_BAKE_STATES.CONFIRMATION:
-        setFormState(STAKE_AND_BAKE_STATES.AUTHORIZATION);
-        break;
-
-      case STAKE_AND_BAKE_STATES.AUTHORIZATION:
-        await onSubmit({ ...data, step: 'authorization' });
         setFormState(STAKE_AND_BAKE_STATES.READY);
         break;
 
@@ -89,6 +81,7 @@ export const StakeAndBakeForm = () => {
           stakeAndBakeSignature={stakeAndBakeSignature}
           amount={amount}
           chain={chain}
+          vaults={vaults}
         />
       );
     }
@@ -103,22 +96,19 @@ export const StakeAndBakeForm = () => {
         );
 
       case STAKE_AND_BAKE_STATES.CONFIRMATION:
+        if (!selectedVault) {
+          // continue to default view
+          setFormState(STAKE_AND_BAKE_STATES.DEFAULT);
+          return null;
+        }
+
         return (
           <ConfirmationView
             onBackClick={() => setFormState(STAKE_AND_BAKE_STATES.DEFAULT)}
             chain={chain}
-            protocol={protocol}
-          />
-        );
-
-      case STAKE_AND_BAKE_STATES.AUTHORIZATION:
-        return (
-          <AuthorizationView
-            onBackClick={() => setFormState(STAKE_AND_BAKE_STATES.DEFAULT)}
-            amount={amount}
-            chain={chain}
-            captchaToken={captchaToken}
-            stakeAndBakeSignature={stakeAndBakeSignature}
+            selectedVault={selectedVault}
+            isAccepted={isConfirmationAccepted}
+            setIsAccepted={setIsConfirmationAccepted}
           />
         );
 
@@ -128,8 +118,7 @@ export const StakeAndBakeForm = () => {
             methods={methods}
             chain={chain}
             minAmount={minAmount}
-            selectedProtocol={selectedProtocol}
-            isCustomProtocol={isCustomProtocol}
+            vaults={vaults}
           />
         );
     }

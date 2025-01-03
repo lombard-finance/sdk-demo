@@ -16,12 +16,17 @@ export const useDepositBtcAddress = () => {
     queryFn: async () => {
       if (!address || !chainId || !isValidChain(chainId)) return undefined;
 
-      return await getDepositBtcAddress({
-        address,
-        chainId,
-        partnerId: '',
-        env: CURRENT_ENV,
-      });
+      try {
+        return await getDepositBtcAddress({
+          address,
+          chainId,
+          partnerId: '',
+          env: CURRENT_ENV,
+        });
+      } catch (error) {
+        console.error('Failed to get deposit BTC address:', error);
+        return null;
+      }
     },
     enabled: !!address && !!chainId && isValidChain(chainId),
   });
