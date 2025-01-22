@@ -3,15 +3,14 @@ import { CURRENT_ENV } from 'modules/common/const';
 
 export const SUPPORTED_CHAINS: Record<number, string> = {
   [OChainId.holesky]: 'Holesky',
-  [OChainId.baseTestnet]: 'Base Sepolia',
+  [OChainId.baseSepoliaTestnet]: 'Base Sepolia',
   [OChainId.binanceSmartChainTestnet]: 'Binance Smart Chain Testnet',
+  [OChainId.binanceSmartChain]: 'Binance Smart Chain',
 };
 
-export const DEFAULT_CHAIN_ID: TChainId = OChainId.holesky; // Default to Holesky for testing
+export const DEFAULT_CHAIN_ID: TChainId = OChainId.binanceSmartChain; // Default to Holesky for testing
 
-export const PARTNER_ID = 'lombard';
-
-export const CAPTCHA_TOKEN = '65716571657165716571657165716571';
+export const PARTNER_ID = 'demoapp';
 
 export const ONE_DAY_SECONDS = 24 * 60 * 60;
 
@@ -33,6 +32,13 @@ export const SUPPORTED_PROTOCOLS = {
       name: 'Veda / Lombard Defi Vault',
       spender: '0x52BD640617eeD47A00dA0da93351092D49208d1d',
       verifyingContract: '0xED7bfd5C1790576105Af4649817f6d35A75CD818',
+    },
+  },
+  [OChainId.binanceSmartChainTestnet]: {
+    vault: {
+      name: 'Veda / Lombard Defi Vault',
+      spender: '0x52BD640617eeD47A00dA0da93351092D49208d1d',
+      verifyingContract: '0x731eFa688F3679688cf60A3993b8658138953ED6',
     },
   },
 };

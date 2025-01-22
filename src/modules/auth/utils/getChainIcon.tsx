@@ -7,8 +7,9 @@ export const getChainIcon = (chainId: number) => {
   switch (chainId) {
     case OChainId.holesky:
       return EthIcon;
-    case OChainId.baseTestnet:
+    case OChainId.baseSepoliaTestnet:
       return BaseIcon;
+    case OChainId.binanceSmartChain:
     case OChainId.binanceSmartChainTestnet:
       return BnbIcon;
     default:

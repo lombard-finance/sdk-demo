@@ -1,6 +1,5 @@
 import { Alert, Button, Stack } from '@mui/material';
 import { BackBtn } from 'modules/common/components/BackBtn';
-import { RecaptchaField } from 'modules/common/components/RecaptchaField';
 import { BtcDepositAddress } from 'modules/stake/components/StakeForm/components/BtcDepositAddress';
 import { ConfirmationTime } from 'modules/stake/components/StakeForm/components/ConfirmationTime';
 import { MintingFee } from 'modules/stake/components/StakeForm/components/MintingFee';
@@ -41,8 +40,6 @@ export const ConfirmedView = ({
       <StakingSummary chainId={chain} amount={amount} />
 
       <ConfirmationTime />
-
-      <RecaptchaField />
 
       <Button
         type="submit"

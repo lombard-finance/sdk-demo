@@ -1,7 +1,6 @@
 import { isValidChain } from '@lombard.finance/sdk';
 import { Alert, Button, Card, CardContent, Stack } from '@mui/material';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
-import { RecaptchaField } from 'modules/common/components/RecaptchaField';
 import { DEFAULT_CHAIN_ID } from 'modules/common/const';
 import { FormProvider } from 'react-hook-form';
 import { useNetworkFeeSignature } from '../../hooks/useNetworkFeeSignature';
@@ -22,7 +21,6 @@ export const StakeForm = () => {
     minAmount,
     chainId,
     hasAddress,
-    captchaToken,
   } = useStakeForm();
 
   const { hasSignature, isExpired, expirationDate } = useNetworkFeeSignature();
@@ -34,7 +32,7 @@ export const StakeForm = () => {
 
   const showGenerateButton = !hasAddress || needsAuthorization;
 
-  const isDisabled = !amount || !chainId || !captchaToken;
+  const isDisabled = !amount || !chainId;
 
   return (
     <FormProvider {...methods}>
@@ -75,8 +73,6 @@ export const StakeForm = () => {
 
                 {showGenerateButton && (
                   <>
-                    <RecaptchaField />
-
                     <Button
                       type="submit"
                       variant="contained"
