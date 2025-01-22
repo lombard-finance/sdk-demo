@@ -7,7 +7,6 @@ import { isEthereumChain } from '../../utils/isEthereumChain';
 import { FormConnectionGuard } from '../StakeForm/components/FormConnectionGuard';
 import { ConfirmationView } from './components/ConfirmationView';
 import { DefaultView } from './components/DefaultView';
-import { NetworkFeeView } from './components/NetworkFeeView';
 import { ReadyView } from './components/ReadyView';
 
 export const StakeAndBakeForm = () => {
@@ -18,7 +17,6 @@ export const StakeAndBakeForm = () => {
   const {
     methods,
     handleSubmit,
-    onSubmit,
     chain,
     minAmount,
     selectedVault,
@@ -29,7 +27,7 @@ export const StakeAndBakeForm = () => {
     handleStakeAndBakeAuthorize,
   } = useStakeAndBakeForm();
 
-  const handleStateTransition = async (data: any) => {
+  const handleStateTransition = async () => {
     const isEthereum = isEthereumChain(chain);
     const hasValidNetworkFee = !isEthereum || networkFeeSignature?.hasSignature;
 
@@ -41,15 +39,6 @@ export const StakeAndBakeForm = () => {
 
     switch (formState) {
       case STAKE_AND_BAKE_STATES.DEFAULT:
-        if (isEthereum && !networkFeeSignature?.hasSignature) {
-          setFormState(STAKE_AND_BAKE_STATES.NETWORK_FEE);
-        } else {
-          setFormState(STAKE_AND_BAKE_STATES.CONFIRMATION);
-        }
-        break;
-
-      case STAKE_AND_BAKE_STATES.NETWORK_FEE:
-        await onSubmit({ ...data, step: 'networkFee' });
         setFormState(STAKE_AND_BAKE_STATES.CONFIRMATION);
         break;
 
@@ -87,14 +76,6 @@ export const StakeAndBakeForm = () => {
     }
 
     switch (formState) {
-      case STAKE_AND_BAKE_STATES.NETWORK_FEE:
-        return (
-          <NetworkFeeView
-            onBackClick={() => setFormState(STAKE_AND_BAKE_STATES.DEFAULT)}
-            chain={chain}
-          />
-        );
-
       case STAKE_AND_BAKE_STATES.CONFIRMATION:
         if (!selectedVault) {
           // continue to default view

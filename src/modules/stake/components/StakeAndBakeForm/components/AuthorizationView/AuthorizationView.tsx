@@ -1,7 +1,6 @@
 import { TChainId } from '@lombard.finance/sdk';
 import { Button, Stack, Typography } from '@mui/material';
 import { BackBtn } from 'modules/common/components/BackBtn';
-import { RecaptchaField } from 'modules/common/components/RecaptchaField';
 import { ConfirmationTime } from 'modules/stake/components/StakeForm/components/ConfirmationTime';
 import { StakingSummary } from 'modules/stake/components/StakeForm/components/StakingSummary';
 
@@ -41,8 +40,6 @@ export const AuthorizationView = ({
         </Typography>
       ) : (
         <Stack gap={2}>
-          <RecaptchaField />
-
           <Stack direction="row" gap={2}>
             <Button
               type="submit"

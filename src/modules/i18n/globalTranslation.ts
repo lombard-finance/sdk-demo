@@ -8,7 +8,7 @@ const chainTranslation: Record<TChainId, string> = {
   [OChainId.binanceSmartChainTestnet]: 'BNB testnet',
   [OChainId.sepolia]: 'Sepolia',
   [OChainId.base]: 'Base',
-  [OChainId.baseTestnet]: 'Base Sepolia',
+  [OChainId.baseSepoliaTestnet]: 'Base Sepolia',
   [OChainId.berachainBartioTestnet]: 'Berachain bArtio',
   [OChainId.corn]: 'Corn',
   [OChainId.swell]: 'Swell',

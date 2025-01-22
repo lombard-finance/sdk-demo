@@ -14,8 +14,16 @@ const bscTestnetFixed = {
   },
 };
 
+const bscFixed = {
+  ...bsc,
+  nativeCurrency: {
+    ...bsc.nativeCurrency,
+    symbol: 'BNB',
+  },
+};
+
 export const config = createConfig({
-  chains: [holesky, baseSepolia, bscTestnetFixed],
+  chains: [holesky, baseSepolia, bscTestnetFixed, bscFixed],
   transports: {
     [holesky.id]: http(),
     [baseSepolia.id]: http(),

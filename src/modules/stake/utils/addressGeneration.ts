@@ -10,6 +10,7 @@ import {
 } from '@lombard.finance/sdk';
 import { BigNumber } from 'bignumber.js';
 import { CURRENT_ENV } from 'modules/common/const';
+import { PARTNER_ID } from '../const';
 
 const getAuthorizationExpirationTime = () => {
   const ONE_DAY_SECONDS = 24 * 60 * 60;
@@ -71,19 +72,21 @@ export const getNonEthereumSignature = async ({
   return { signature };
 };
 
+interface IGenerateAddressParams {
+  chainId: TChainId;
+  address: string;
+  signature: string;
+  eip712Data?: string;
+  signatureData?: string;
+}
+
 export const generateAddress = async ({
   chainId,
   address,
   signature,
   eip712Data,
-  captchaToken,
-}: {
-  chainId: TChainId;
-  address: string;
-  signature: string;
-  eip712Data: string | undefined;
-  captchaToken: string;
-}) => {
+  signatureData,
+}: IGenerateAddressParams) => {
   if (!chainId || !isValidChain(chainId) || !address) {
     throw new Error('Missing required data for address generation');
   }
@@ -93,7 +96,8 @@ export const generateAddress = async ({
     chainId,
     signature,
     eip712Data,
-    captchaToken,
+    signatureData,
+    partnerId: PARTNER_ID,
     env: CURRENT_ENV,
   });
 };

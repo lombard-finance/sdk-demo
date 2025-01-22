@@ -64,16 +64,10 @@ export const useStakeForm = () => {
   const { handleSubmit, watch } = methods;
   const amount = watch('amount');
   const captchaToken = watch('captchaToken');
-  const onSubmit = async (data: IStakeFormValues) => {
+  const onSubmit = async () => {
     try {
       const provider = (await connector?.getProvider()) as IEIP1193Provider;
-      if (
-        !chain ||
-        !address ||
-        !provider ||
-        !data.captchaToken ||
-        !networkFee
-      ) {
+      if (!chain || !address || !provider || !networkFee) {
         return;
       }
 
@@ -94,7 +88,6 @@ export const useStakeForm = () => {
           address,
           signature,
           eip712Data,
-          captchaToken: data.captchaToken,
         });
 
         await refetchDepositBtcAddress();
