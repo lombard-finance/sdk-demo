@@ -129,7 +129,7 @@ export const useStakeAndBakeForm = () => {
       `Successfully authorized stake and bake for ${amount} LBTC.`,
       {
         variant: 'success',
-        autoHideDuration: 5000,
+        autoHideDuration: 3000,
       },
     );
   };

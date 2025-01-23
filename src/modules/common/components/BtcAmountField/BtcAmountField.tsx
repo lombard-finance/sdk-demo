@@ -15,11 +15,13 @@ import { translation } from './translation';
 interface IBtcAmountFieldProps<T extends FieldValues> {
   control: Control<T>;
   minAmount?: number;
+  isDisabled?: boolean;
 }
 
 export function BtcAmountField<T extends FieldValues>({
   control,
   minAmount,
+  isDisabled,
 }: IBtcAmountFieldProps<T>): JSX.Element {
   const { keys, t } = useTranslation(translation);
 
@@ -46,6 +48,7 @@ export function BtcAmountField<T extends FieldValues>({
           token={ONativeToken.BTC}
           decimalPlaces={DECIMAL_PLACES_BTC}
           maxDecimalsLen={BTC_DECIMALS}
+          isDisabled={isDisabled}
           InputProps={{
             sx: {
               height: '80px',

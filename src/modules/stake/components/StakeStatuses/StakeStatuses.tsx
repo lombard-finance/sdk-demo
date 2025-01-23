@@ -1,23 +1,24 @@
-import { Stack, Typography } from '@mui/material';
-import { useConnection } from 'modules/auth';
+import { Stack } from '@mui/material';
 import { useDepositBtcAddress } from '../../hooks/useDepositBtcAddress';
 import { DepositList } from './components/DepositList';
 import { WaitingForDeposit } from './components/WaitingForDeposit';
+import { ReactNode } from 'react';
+import { useConnection } from 'modules/auth';
 
-export const StakeStatuses = () => {
+interface IStakeStatusesProps {
+  content?: ReactNode;
+}
+
+export const StakeStatuses = ({ content }: IStakeStatusesProps) => {
   const { isConnected } = useConnection();
   const { depositAddress } = useDepositBtcAddress();
 
-  if (!isConnected) {
-    return null;
-  }
-
   return (
     <Stack gap={2}>
-      <Typography variant="h6">Stakes</Typography>
-      <Typography color="text.secondary">Status of BTC stake.</Typography>
-
-      {depositAddress ? <DepositList /> : <WaitingForDeposit />}
+      {content}
+      {isConnected && (
+        <>{depositAddress ? <DepositList /> : <WaitingForDeposit />}</>
+      )}
     </Stack>
   );
 };

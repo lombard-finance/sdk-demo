@@ -64,7 +64,7 @@ export const Connect = ({ children, ...props }: Props) => {
         size="small"
         {...props}
       >
-        {children || 'Connect'}
+        {children || 'Connect wallet'}
       </Button>
 
       <ConnectionModal isOpened={isModalOpen} onClose={handleCloseModal} />

@@ -42,7 +42,11 @@ export const ReadyView = ({
 
   return (
     <Stack gap={3}>
-      <BtcAmountField control={methods.control} minAmount={minAmount} />
+      <BtcAmountField
+        control={methods.control}
+        minAmount={minAmount}
+        isDisabled={Boolean(stakeAndBakeSignature && !isStakeAndBakeExpired)}
+      />
 
       <ProtocolSelector vaults={vaults} />
 

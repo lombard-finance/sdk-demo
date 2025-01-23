@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-export type TEnv = 'stage' | 'testnet' | 'prod';
+export type TEnv = 'stage' | 'prod';
 
 // semantic types
 export type Days = number;

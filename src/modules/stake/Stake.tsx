@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Layout } from 'modules/common/components/Layout';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { StakeStatuses } from './components/StakeStatuses';
@@ -29,7 +29,18 @@ export function Stake(): JSX.Element {
           <Outlet />
         </Stack>
       }
-      right={<StakeStatuses />}
+      right={
+        <StakeStatuses
+          content={
+            <>
+              <Typography variant="h6">Stakes</Typography>
+              <Typography color="text.secondary">
+                Status of BTC stake.
+              </Typography>
+            </>
+          }
+        />
+      }
     />
   );
 }

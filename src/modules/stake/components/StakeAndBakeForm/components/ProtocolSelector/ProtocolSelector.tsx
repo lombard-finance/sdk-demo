@@ -23,14 +23,11 @@ export const ProtocolSelector = ({
   const handleChange = (event: SelectChangeEvent) => {
     setValue('vaultKey', event.target.value);
   };
-  console.log({
-    vaults,
-  });
 
   return (
     <Stack gap={1}>
       <Typography component="label" fontWeight={500}>
-        Choose vault
+        Choose protocol
       </Typography>
 
       <Select
