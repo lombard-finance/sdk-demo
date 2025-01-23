@@ -1,10 +1,10 @@
 import { IStakeAndBakeVault } from '@lombard.finance/sdk';
 import { Button, Stack } from '@mui/material';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
-import { MintingFee } from 'modules/stake/components/StakeForm/components/MintingFee';
 import { IStakeAndBakeFormValues } from 'modules/stake/hooks/useStakeAndBakeForm';
-import { UseFormReturn } from 'react-hook-form';
+import { useFormContext, UseFormReturn } from 'react-hook-form';
 import { ProtocolSelector } from '../ProtocolSelector';
+import { StakeAndBakeMintingFee } from '../StakeAndBakeMintingFee';
 
 interface IDefaultViewProps {
   methods: UseFormReturn<IStakeAndBakeFormValues>;
@@ -19,13 +19,16 @@ export const DefaultView = ({
   minAmount,
   vaults,
 }: IDefaultViewProps) => {
+  const { watch } = useFormContext();
+  const vaultKey = watch('vaultKey');
+
   return (
     <>
       <BtcAmountField control={methods.control} minAmount={minAmount} />
 
       <ProtocolSelector vaults={vaults} />
 
-      <MintingFee chainId={chain} />
+      <StakeAndBakeMintingFee chainId={chain} vaultKey={vaultKey}/>
 
       <Stack direction="row" alignItems="center">
         <Button variant="contained" fullWidth type="submit">

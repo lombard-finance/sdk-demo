@@ -3,11 +3,14 @@ import { Alert, Button, Stack } from '@mui/material';
 import { BtcAmountField } from 'modules/common/components/BtcAmountField';
 import { BtcDepositAddress } from 'modules/stake/components/StakeForm/components/BtcDepositAddress';
 import { ConfirmationTime } from 'modules/stake/components/StakeForm/components/ConfirmationTime';
-import { MintingFee } from 'modules/stake/components/StakeForm/components/MintingFee';
 import { StakingSummary } from 'modules/stake/components/StakeForm/components/StakingSummary';
 import { IStakeAndBakeFormValues } from 'modules/stake/hooks/useStakeAndBakeForm';
-import { UseFormReturn } from 'react-hook-form';
+import { useFormContext, UseFormReturn } from 'react-hook-form';
 import { ProtocolSelector } from '../ProtocolSelector';
+import { StakeAndBakeMintingFee } from '../StakeAndBakeMintingFee';
+import { useMemo } from 'react';
+import { getSelectedVault } from 'modules/stake/utils/getSelectedVault';
+import { useStakeAndBakeFee } from 'modules/stake/hooks/useStakeAndBakeFee';
 
 interface ReadyViewProps {
   methods: UseFormReturn<IStakeAndBakeFormValues>;
@@ -40,6 +43,19 @@ export const ReadyView = ({
     !stakeAndBakeSignature?.expirationDate ||
     stakeAndBakeSignature.expirationDate < new Date();
 
+  const { watch } = useFormContext();
+  const vaultKey = watch('vaultKey');
+
+  const selectedVault = useMemo(
+    () => getSelectedVault(chain, vaultKey),
+    [chain, vaultKey],
+  );
+
+  const { stakeAndBakeFee: fee, isLoading } = useStakeAndBakeFee(
+    chain,
+    selectedVault?.address || '',
+  );
+
   return (
     <Stack gap={3}>
       <BtcAmountField
@@ -50,9 +66,14 @@ export const ReadyView = ({
 
       <ProtocolSelector vaults={vaults} />
 
-      <MintingFee chainId={chain} />
+      <StakeAndBakeMintingFee chainId={chain} vaultKey={vaultKey} />
 
-      <StakingSummary chainId={chain} amount={amount} />
+      <StakingSummary
+        chainId={chain}
+        amount={amount}
+        fee={fee}
+        isLoading={isLoading}
+      />
 
       <ConfirmationTime />
 

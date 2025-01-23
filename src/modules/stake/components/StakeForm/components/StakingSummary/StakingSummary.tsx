@@ -2,26 +2,29 @@ import { Stack, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { BTCIcon, LBTCIcon } from 'modules/common/icons';
 import { useLBTCExchangeRate } from '../../../../hooks/useLBTCExchangeRate';
-import { useLBTCMintingFee } from '../../../../hooks/useLBTCMintingFee';
 
 interface StakingSummaryProps {
   chainId: number;
   amount: string | number;
+  fee?: BigNumber;
+  isLoading: boolean;
 }
 
-export const StakingSummary = ({ chainId, amount }: StakingSummaryProps) => {
-  const {
-    exchangeRate,
-    isLoading: isLoadingRate,
-  } = useLBTCExchangeRate(chainId);
-  const { networkFee, isLoading: isLoadingFee } = useLBTCMintingFee(chainId);
+export const StakingSummary = ({
+  chainId,
+  amount,
+  fee,
+  isLoading: isFeeLoading,
+}: StakingSummaryProps) => {
+  const { exchangeRate, isLoading: isLoadingRate } =
+    useLBTCExchangeRate(chainId);
 
-  const isLoading = isLoadingRate || isLoadingFee;
+  const isLoading = isLoadingRate || isFeeLoading;
   const btcAmount = new BigNumber(amount || '0');
 
   const expectedLBTC = btcAmount
     .multipliedBy(exchangeRate || 1)
-    .minus(networkFee || 0);
+    .minus(fee || 0);
 
   return (
     <Stack gap={1}>

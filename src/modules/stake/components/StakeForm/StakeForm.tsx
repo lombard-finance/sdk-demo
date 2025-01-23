@@ -11,6 +11,7 @@ import { ConfirmationTime } from './components/ConfirmationTime';
 import { FormConnectionGuard } from './components/FormConnectionGuard';
 import { MintingFee } from './components/MintingFee';
 import { StakingSummary } from './components/StakingSummary';
+import { useLBTCMintingFee } from 'modules/stake/hooks/useLBTCMintingFee';
 
 export const StakeForm = () => {
   const {
@@ -19,7 +20,7 @@ export const StakeForm = () => {
     onSubmit,
     amount,
     minAmount,
-    chainId,
+    chainId = DEFAULT_CHAIN_ID,
     hasAddress,
   } = useStakeForm();
 
@@ -33,6 +34,8 @@ export const StakeForm = () => {
   const showGenerateButton = !hasAddress || needsAuthorization;
 
   const isDisabled = !amount || !chainId;
+
+  const { networkFee, isLoading } = useLBTCMintingFee(chainId);
 
   return (
     <FormProvider {...methods}>
@@ -61,6 +64,8 @@ export const StakeForm = () => {
                 <StakingSummary
                   chainId={chainId || DEFAULT_CHAIN_ID}
                   amount={amount}
+                  isLoading={isLoading}
+                  fee={networkFee}
                 />
 
                 <ConfirmationTime />

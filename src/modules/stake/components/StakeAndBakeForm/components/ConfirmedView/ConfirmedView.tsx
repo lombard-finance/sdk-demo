@@ -4,6 +4,7 @@ import { BtcDepositAddress } from 'modules/stake/components/StakeForm/components
 import { ConfirmationTime } from 'modules/stake/components/StakeForm/components/ConfirmationTime';
 import { MintingFee } from 'modules/stake/components/StakeForm/components/MintingFee';
 import { StakingSummary } from 'modules/stake/components/StakeForm/components/StakingSummary';
+import { useLBTCMintingFee } from 'modules/stake/hooks/useLBTCMintingFee';
 
 interface IConfirmedViewProps {
   onBackClick: () => void;
@@ -20,6 +21,8 @@ export const ConfirmedView = ({
   captchaToken,
   stakeAndBakeSignature,
 }: IConfirmedViewProps) => {
+  const { networkFee, isLoading } = useLBTCMintingFee(chain);
+
   return (
     <>
       <Stack direction="row" alignItems="center">
@@ -37,7 +40,12 @@ export const ConfirmedView = ({
 
       <MintingFee chainId={chain} />
 
-      <StakingSummary chainId={chain} amount={amount} />
+      <StakingSummary
+        chainId={chain}
+        amount={amount}
+        fee={networkFee}
+        isLoading={isLoading}
+      />
 
       <ConfirmationTime />
 

@@ -67,8 +67,6 @@ export const useStakeAndBakeForm = () => {
     return getStakeAndBakeVaults(chain);
   }, [chain]);
 
-  console.log(chain, vaults);
-
   const selectedVault = useMemo(() => {
     return vaults.find(vault => vault.key === selectedVaultKey);
   }, [vaults, selectedVaultKey]);

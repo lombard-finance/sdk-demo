@@ -1,7 +1,5 @@
 import { getLBTCMintingFee, isValidChain } from '@lombard.finance/sdk';
 import { useQuery } from '@tanstack/react-query';
-import BigNumber from 'bignumber.js';
-import { isEthereumChain } from '../utils/isEthereumChain';
 
 export const useLBTCMintingFee = (chainId: number) => {
   const {
@@ -15,13 +13,9 @@ export const useLBTCMintingFee = (chainId: number) => {
         return undefined;
       }
 
-      if (isEthereumChain(chainId)) {
-        return await getLBTCMintingFee({
-          chainId,
-        });
-      }
-
-      return BigNumber(0);
+      return await getLBTCMintingFee({
+        chainId,
+      });
     },
     enabled: !!chainId && isValidChain(chainId),
   });

@@ -3,6 +3,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import { BackBtn } from 'modules/common/components/BackBtn';
 import { ConfirmationTime } from 'modules/stake/components/StakeForm/components/ConfirmationTime';
 import { StakingSummary } from 'modules/stake/components/StakeForm/components/StakingSummary';
+import { useLBTCMintingFee } from 'modules/stake/hooks/useLBTCMintingFee';
 
 interface AuthorizationViewProps {
   onBackClick: () => void;
@@ -21,6 +22,8 @@ export const AuthorizationView = ({
   chain,
   stakeAndBakeSignature,
 }: AuthorizationViewProps) => {
+  const { networkFee, isLoading: isLoadingFee } = useLBTCMintingFee(chain);
+
   return (
     <Stack gap={3}>
       <Stack direction="row" alignItems="center">
@@ -29,7 +32,12 @@ export const AuthorizationView = ({
 
       <Typography variant="h6">Sign Stake & Bake Authorization</Typography>
 
-      <StakingSummary chainId={chain} amount={amount} />
+      <StakingSummary
+        chainId={chain}
+        amount={amount}
+        fee={networkFee}
+        isLoading={isLoadingFee}
+      />
 
       <ConfirmationTime />
 
