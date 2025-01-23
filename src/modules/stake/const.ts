@@ -1,16 +1,15 @@
 import { getLbtcAddressConfig, OChainId, TChainId } from '@lombard.finance/sdk';
-import { CURRENT_ENV } from 'modules/common/const';
+import { CURRENT_ENV, IS_PROD } from 'modules/common/const';
 
-export const SUPPORTED_CHAINS: Record<number, string> = {
-  [OChainId.holesky]: 'Holesky',
-  [OChainId.baseSepoliaTestnet]: 'Base Sepolia',
-  [OChainId.binanceSmartChainTestnet]: 'Binance Smart Chain Testnet',
-  [OChainId.binanceSmartChain]: 'Binance Smart Chain',
-};
+export const SUPPORTED_CHAINS: Record<number, string> = IS_PROD
+  ? { [OChainId.binanceSmartChain]: 'Binance Smart Chain' }
+  : {
+      [OChainId.holesky]: 'Holesky',
+      [OChainId.baseSepoliaTestnet]: 'Base Sepolia',
+      [OChainId.binanceSmartChainTestnet]: 'Binance Smart Chain Testnet',
+    };
 
-export const DEFAULT_CHAIN_ID: TChainId = OChainId.binanceSmartChain; // Default to Holesky for testing
-
-export const PARTNER_ID = 'demoapp';
+export const PARTNER_ID = IS_PROD ? 'demoapp' : 'test';
 
 export const ONE_DAY_SECONDS = 24 * 60 * 60;
 
@@ -26,7 +25,7 @@ export const ETHEREUM_CHAINS: TChainId[] = [
   OChainId.holesky,
 ];
 
-export const SUPPORTED_PROTOCOLS = {
+export const CUSTOM_SUPPORTED_PROTOCOLS = {
   [OChainId.holesky]: {
     vault: {
       name: 'Veda / Lombard Defi Vault',
@@ -43,14 +42,21 @@ export const SUPPORTED_PROTOCOLS = {
   },
 };
 
-export const getProtocolContracts = (chainId: number, protocol: string) => {
-  return SUPPORTED_PROTOCOLS[chainId as keyof typeof SUPPORTED_PROTOCOLS]?.[
-    protocol as keyof (typeof SUPPORTED_PROTOCOLS)[keyof typeof SUPPORTED_PROTOCOLS]
+export const getCustomProtocolContracts = (
+  chainId: number,
+  protocol: string,
+) => {
+  return CUSTOM_SUPPORTED_PROTOCOLS[
+    chainId as keyof typeof CUSTOM_SUPPORTED_PROTOCOLS
+  ]?.[
+    protocol as keyof (typeof CUSTOM_SUPPORTED_PROTOCOLS)[keyof typeof CUSTOM_SUPPORTED_PROTOCOLS]
   ];
 };
 
 export const getProtocolsForChain = (chainId: number) => {
-  return SUPPORTED_PROTOCOLS[chainId as keyof typeof SUPPORTED_PROTOCOLS];
+  return CUSTOM_SUPPORTED_PROTOCOLS[
+    chainId as keyof typeof CUSTOM_SUPPORTED_PROTOCOLS
+  ];
 };
 
 export const getVerifyingContract = (chainId: number) => {

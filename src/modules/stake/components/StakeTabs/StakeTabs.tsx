@@ -41,7 +41,7 @@ export function StakeTabs({
           width: '100%',
 
           '& .MuiTab-root': {
-            fontSize: 14,
+            fontSize: 16,
             minWidth: 'auto',
             minHeight: 'auto',
             height: 36,

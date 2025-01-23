@@ -47,10 +47,10 @@ export const ConfirmationView = ({
       <Typography variant="h6">Confirm LBTC destination</Typography>
 
       <Stack gap={2}>
-        <SummaryItem
-          label="Mint address"
-          value={
-            depositAddress && (
+        {depositAddress && (
+          <SummaryItem
+            label="Mint address"
+            value={
               <>
                 <Typography
                   sx={{
@@ -65,9 +65,9 @@ export const ConfirmationView = ({
                 </Typography>
                 <CopyButton text={depositAddress} />
               </>
-            )
-          }
-        />
+            }
+          />
+        )}
 
         <SummaryItem
           label="Defi address"

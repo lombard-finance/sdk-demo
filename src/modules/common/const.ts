@@ -1,4 +1,4 @@
-import { OChainId, TEnv } from '@lombard.finance/sdk';
+import { OChainId, TChainId, TEnv } from '@lombard.finance/sdk';
 import { Seconds } from './types';
 
 export const ROOT_PATH = '/';
@@ -6,9 +6,13 @@ export const ROOT_PATH = '/';
 export const ACTION_CACHE: Seconds = 60;
 export const ACTION_CACHE_LONG: Seconds = 600;
 
-export const CURRENT_ENV = 'prod' as TEnv;
+export const metaEnv = import.meta.env;
+export const CURRENT_ENV = metaEnv.VITE_ENV as TEnv;
+export const IS_PROD = CURRENT_ENV === 'prod';
 
-export const DEFAULT_CHAIN_ID = OChainId.binanceSmartChain;
+export const DEFAULT_CHAIN_ID: TChainId = IS_PROD
+  ? OChainId.binanceSmartChain
+  : OChainId.holesky;
 
 export const DECIMAL_PLACES_ZERO = 0;
 export const DECIMAL_PLACES = 4;
