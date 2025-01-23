@@ -13,18 +13,14 @@ export function Layout({ left, right }: LayoutProps): JSX.Element {
   return (
     <Stack
       direction="column"
+      justifyContent="space-between"
       sx={{
-        height: {
-          xs: 'auto',
-          md: '100%',
-        },
-        minHeight: {
-          xs: 'auto',
-        },
+        minHeight: '100vh',
       }}
     >
       <Stack
         height="100%"
+        flex="1"
         direction={{
           xs: 'column',
           lg: 'row',
@@ -45,7 +41,7 @@ export function Layout({ left, right }: LayoutProps): JSX.Element {
         </Stack>
 
         <Stack
-          height="100%"
+          maxHeight="100vh"
           flex={1}
           sx={{ backgroundColor: 'customMain.100', overflowY: 'auto' }}
         >
@@ -63,14 +59,8 @@ export function Layout({ left, right }: LayoutProps): JSX.Element {
           </Container>
         </Stack>
       </Stack>
-      <Stack
-        width="100%"
-        height="100%"
-        flex={{
-          xs: 0,
-          lg: 1,
-        }}
-      >
+
+      <Stack width="100%">
         <Footer />
       </Stack>
     </Stack>
