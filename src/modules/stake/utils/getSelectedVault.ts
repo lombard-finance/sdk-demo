@@ -1,7 +1,15 @@
-import { getStakeAndBakeVaults, TChainId } from '@lombard.finance/sdk';
+import {
+  getStakeAndBakeVaults,
+  IStakeAndBakeVault,
+  TChainId,
+} from '@lombard.finance/sdk';
 
 export function getSelectedVault(chainId: number, vaultKey: string) {
-  const vaults = getStakeAndBakeVaults(chainId as TChainId);
+  let vaults: IStakeAndBakeVault[] = [];
+
+  try {
+    vaults = getStakeAndBakeVaults(chainId as TChainId);
+  } catch (error) {}
 
   const selectedVault = vaults.find(vault => vault.key === vaultKey);
 

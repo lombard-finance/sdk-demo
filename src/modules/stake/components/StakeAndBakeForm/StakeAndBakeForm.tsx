@@ -1,5 +1,5 @@
 import { Card, CardContent, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import {
   STAKE_AND_BAKE_STATES,
@@ -30,6 +30,10 @@ export const StakeAndBakeForm = () => {
     networkFeeSignature,
     handleStakeAndBakeAuthorize,
   } = useStakeAndBakeForm();
+
+  useEffect(() => {
+    setFormState(STAKE_AND_BAKE_STATES.DEFAULT);
+  }, [chain]);
 
   const handleStateTransition = async () => {
     const isEthereum = isEthereumChain(chain);

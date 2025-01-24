@@ -57,11 +57,15 @@ export const useStakeAndBakeForm = () => {
     },
   });
 
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, watch, setValue } = methods;
   const chain = watch('chain');
   const amount = watch('amount');
   const selectedVaultKey = watch('vaultKey');
   const captchaToken = watch('captchaToken');
+
+  useEffect(() => {
+    setValue('chain', chainId as TChainId);
+  }, [chainId]);
 
   const vaults = useMemo(() => {
     try {

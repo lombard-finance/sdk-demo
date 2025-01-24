@@ -7,7 +7,7 @@ import {
 import { useConnection } from 'modules/auth';
 import { IStakeFormValues } from 'modules/common/components/BtcAmountField/types';
 import { DEFAULT_CHAIN_ID, SATOSHI_SCALE } from 'modules/common/const';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   generateAddress,
@@ -61,7 +61,12 @@ export const useStakeForm = () => {
     mode: 'onChange',
   });
 
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, watch, setValue } = methods;
+
+  useEffect(() => {
+    setValue('chain', chainId as TChainId);
+  }, [chainId]);
+
   const amount = watch('amount');
   const captchaToken = watch('captchaToken');
   const onSubmit = async () => {
