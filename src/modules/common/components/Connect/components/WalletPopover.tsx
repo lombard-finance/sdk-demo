@@ -1,4 +1,5 @@
 import { Button, Popover, Stack, Typography } from '@mui/material';
+import { CopyButton } from '../../CopyButton';
 
 interface WalletPopoverProps {
   open: boolean;
@@ -33,9 +34,13 @@ export const WalletPopover = ({
         <Typography variant="body2" color="text.secondary">
           Connected Address
         </Typography>
-        <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
-          {address}
-        </Typography>
+        <Stack direction="row" alignItems="center">
+          <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
+            {address}
+          </Typography>
+          <CopyButton text={address} />
+        </Stack>
+
         <Button
           variant="outlined"
           color="primary"
