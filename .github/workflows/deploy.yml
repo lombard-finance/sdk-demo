@@ -39,7 +39,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Build stage
-        working-directory: ./apps/main
+        working-directory: .
         env:
           NODE_OPTIONS: '--max-old-space-size=8192'
           VITE_RECAPTCHA_SITE_KEY_STAGE: ${{ secrets.VITE_RECAPTCHA_SITE_KEY_STAGE }}
