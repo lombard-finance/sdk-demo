@@ -110,6 +110,7 @@ export const useStakeAndBakeForm = () => {
       value: toSatoshi(amount).toString(),
       expiry: expirySeconds,
       vaultKey: selectedVault.key,
+      env: CURRENT_ENV,
     });
 
     await storeStakeAndBakeSignature({
