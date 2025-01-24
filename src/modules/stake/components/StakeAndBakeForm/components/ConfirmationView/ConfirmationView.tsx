@@ -11,7 +11,7 @@ import { BackBtn } from 'modules/common/components/BackBtn';
 import { Checkbox } from 'modules/common/components/Checkbox';
 import { CopyButton } from 'modules/common/components/CopyButton';
 import { SummaryItem } from 'modules/stake/components/SummaryItem';
-import { SUPPORTED_CHAINS } from 'modules/stake/const';
+import { STAKE_AND_BAKE_SUPPORTED_CHAINS } from 'modules/stake/const';
 import { useDepositBtcAddress } from 'modules/stake/hooks/useDepositBtcAddress';
 
 interface IConfirmationViewProps {
@@ -31,7 +31,7 @@ export const ConfirmationView = ({
 }: IConfirmationViewProps) => {
   const { depositAddress } = useDepositBtcAddress();
 
-  const supportedChain = SUPPORTED_CHAINS[chain];
+  const supportedChain = STAKE_AND_BAKE_SUPPORTED_CHAINS[chain];
   const ChainIcon = getChainIcon(chain);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,10 +1,13 @@
 import { Alert, Button, Stack } from '@mui/material';
 import { useConnection } from 'modules/auth';
-import { SUPPORTED_CHAINS } from 'modules/stake/const';
 import { PropsWithChildren } from 'react';
 import { useSwitchChain } from 'wagmi';
 
-export const NetworkGuard = ({ children }: PropsWithChildren) => {
+interface INetworkGuardProps extends PropsWithChildren {
+  supportedChains: Record<number, string>;
+}
+
+export const NetworkGuard = ({ children, supportedChains }: INetworkGuardProps) => {
   const { chainId, isConnected } = useConnection();
   const { switchChain, isPending } = useSwitchChain();
 
@@ -16,20 +19,20 @@ export const NetworkGuard = ({ children }: PropsWithChildren) => {
   // Check if current chainId is in supported chains
   const isSupportedNetwork =
     chainId &&
-    Object.keys(SUPPORTED_CHAINS).some(chain => Number(chain) === chainId);
+    Object.keys(supportedChains).some(chain => Number(chain) === chainId);
 
   if (!isSupportedNetwork) {
     return (
       <Stack gap={2}>
         <Alert severity="error">
           Please switch to a supported network. Supported networks are:{' '}
-          {Object.values(SUPPORTED_CHAINS)
+          {Object.values(supportedChains)
             .map(chain => chain)
             .join(', ')}
         </Alert>
 
         <Stack alignItems="center" gap={1}>
-          {Object.entries(SUPPORTED_CHAINS).map(chain => (
+          {Object.entries(supportedChains).map(chain => (
             <Button
               key={chain?.[0]}
               size="small"

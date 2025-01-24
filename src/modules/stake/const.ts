@@ -9,6 +9,13 @@ export const SUPPORTED_CHAINS: Record<number, string> = IS_PROD
       [OChainId.binanceSmartChainTestnet]: 'Binance Smart Chain Testnet',
     };
 
+export const STAKE_AND_BAKE_SUPPORTED_CHAINS: Record<number, string> = IS_PROD
+  ? { [OChainId.binanceSmartChain]: 'Binance Smart Chain' }
+  : {
+      [OChainId.holesky]: 'Holesky',
+      [OChainId.binanceSmartChainTestnet]: 'Binance Smart Chain Testnet',
+    };
+
 export const PARTNER_ID = IS_PROD ? 'demoapp' : 'test';
 
 export const ONE_DAY_SECONDS = 24 * 60 * 60;

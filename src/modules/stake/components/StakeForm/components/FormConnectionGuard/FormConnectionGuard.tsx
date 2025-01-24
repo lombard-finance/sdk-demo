@@ -8,11 +8,13 @@ import { UseFormReturn } from 'react-hook-form';
 
 interface FormConnectionGuardProps extends PropsWithChildren {
   methods: UseFormReturn<any>;
+  supportedChains: Record<number, string>;
 }
 
 export const FormConnectionGuard = ({
   children,
   methods,
+  supportedChains,
 }: FormConnectionGuardProps) => {
   const { isConnected } = useConnection();
 
@@ -28,5 +30,7 @@ export const FormConnectionGuard = ({
     );
   }
 
-  return <NetworkGuard>{children}</NetworkGuard>;
+  return (
+    <NetworkGuard supportedChains={supportedChains}>{children}</NetworkGuard>
+  );
 };

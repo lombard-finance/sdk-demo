@@ -64,7 +64,11 @@ export const useStakeAndBakeForm = () => {
   const captchaToken = watch('captchaToken');
 
   const vaults = useMemo(() => {
-    return getStakeAndBakeVaults(chain);
+    try {
+      return getStakeAndBakeVaults(chain);
+    } catch (error) {
+      return [];
+    }
   }, [chain]);
 
   const selectedVault = useMemo(() => {

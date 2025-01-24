@@ -12,6 +12,7 @@ import { FormConnectionGuard } from './components/FormConnectionGuard';
 import { MintingFee } from './components/MintingFee';
 import { StakingSummary } from './components/StakingSummary';
 import { useLBTCMintingFee } from 'modules/stake/hooks/useLBTCMintingFee';
+import { SUPPORTED_CHAINS } from 'modules/stake/const';
 
 export const StakeForm = () => {
   const {
@@ -53,7 +54,10 @@ export const StakeForm = () => {
             }}
           >
             <Stack gap={3}>
-              <FormConnectionGuard methods={methods}>
+              <FormConnectionGuard
+                methods={methods}
+                supportedChains={SUPPORTED_CHAINS}
+              >
                 <BtcAmountField
                   control={methods.control}
                   minAmount={minAmount}

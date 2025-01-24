@@ -1,7 +1,11 @@
 import { Card, CardContent, Stack } from '@mui/material';
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
-import { STAKE_AND_BAKE_STATES, StakeAndBakeState } from '../../const';
+import {
+  STAKE_AND_BAKE_STATES,
+  STAKE_AND_BAKE_SUPPORTED_CHAINS,
+  StakeAndBakeState,
+} from '../../const';
 import { useStakeAndBakeForm } from '../../hooks/useStakeAndBakeForm';
 import { isEthereumChain } from '../../utils/isEthereumChain';
 import { FormConnectionGuard } from '../StakeForm/components/FormConnectionGuard';
@@ -117,7 +121,10 @@ export const StakeAndBakeForm = () => {
             }}
           >
             <Stack gap={3}>
-              <FormConnectionGuard methods={methods}>
+              <FormConnectionGuard
+                methods={methods}
+                supportedChains={STAKE_AND_BAKE_SUPPORTED_CHAINS}
+              >
                 {renderFormStep()}
               </FormConnectionGuard>
             </Stack>

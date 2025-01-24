@@ -2,7 +2,7 @@ import { TChainId } from '@lombard.finance/sdk';
 import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material';
 import { BackBtn } from 'modules/common/components/BackBtn';
 import { LBTCIcon } from 'modules/common/icons';
-import { SUPPORTED_CHAINS } from 'modules/stake/const';
+import { STAKE_AND_BAKE_SUPPORTED_CHAINS } from 'modules/stake/const';
 import { useLBTCMintingFee } from 'modules/stake/hooks/useLBTCMintingFee';
 import { default as AuthorizeFee } from './assets/authorize-fee.svg?react';
 
@@ -13,7 +13,7 @@ interface NetworkFeeViewProps {
 
 export const NetworkFeeView = ({ onBackClick, chain }: NetworkFeeViewProps) => {
   const { networkFee, isLoading } = useLBTCMintingFee(chain);
-  const chainName = SUPPORTED_CHAINS[chain];
+  const chainName = STAKE_AND_BAKE_SUPPORTED_CHAINS[chain];
 
   const lbtcAmount = networkFee?.decimalPlaces(8).toFormat() || '...';
 
