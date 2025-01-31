@@ -34,7 +34,7 @@ export function Header(): JSX.Element {
         />
 
         <Typography variant="body2" color="text.secondary" whiteSpace="nowrap">
-          Staking SDK Demo
+          Lombard SDK
         </Typography>
       </ButtonBase>
 

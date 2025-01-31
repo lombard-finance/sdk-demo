@@ -5,8 +5,8 @@ import { StakeStatuses } from './components/StakeStatuses';
 import { StakeTabs } from './components/StakeTabs';
 
 const tabs = [
-  { value: '/stake', label: 'Stake' },
-  { value: '/stake/stake-and-bake', label: 'Stake & Bake' },
+  { value: '/stake', label: 'Deposit' },
+  { value: '/stake/stake-and-bake', label: 'Deposit into DeFi' },
 ];
 
 export function Stake(): JSX.Element {
